@@ -14,7 +14,9 @@
     "commit:comment": "引导设置规范化的提交信息",
     "commit": "cz",
     "build:comment": "构建",
-    "build": "npm run eslint && npm run prettier && rm -rf lib && tsc --build"
+    "build": "npm run eslint && npm run prettier && tsc --build",
+    "preview:comment": "使用nodemon启动预览服务",
+    "preview": "nodemon lib/index.js"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +32,7 @@
     "eslint": "^8.29.0",
     "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
+    "nodemon": "^2.0.20",
     "prettier": "^2.8.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.4"
@@ -54,6 +57,7 @@
   "dependencies": {
     "@mysql/xdevapi": "^8.0.31",
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
   }
 }

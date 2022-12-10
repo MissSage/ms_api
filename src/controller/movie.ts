@@ -1,19 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log(req.body);
+    
     res.send('post');
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    res.send('login');
   } catch (error) {
     next(error);
   }
@@ -34,7 +24,6 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    JSON.parse('aaaaa')
     res.send('get');
   } catch (error) {
     next(error);
