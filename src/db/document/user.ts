@@ -1,4 +1,10 @@
-import {Document} from '@mysql/xdevapi'
-export const user:Document = {
+import { Base } from '../mysql';
 
+export class User extends Base {
+  constructor() {
+    super({
+      schema: 'ms',
+      collection: 'user',
+    });
+  }
 }

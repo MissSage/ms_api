@@ -1,7 +1,15 @@
+import { User } from '../db';
 import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    res.send('post');
+    const user = new User();
+    const row = await user.add(req.body);
+    const ids = row.getGeneratedIds();
+    const nUser = await user.find({
+      query: { _id: ids?.[0] },
+      pagination: { page: 1, size: 20 },
+    });
+    res.status(201).json(nUser);
   } catch (error) {
     next(error);
   }
@@ -34,8 +42,12 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    JSON.parse('aaaaa')
-    res.send('get');
+    debugger;
+    const user = new User();
+    const users = await user.find();
+    res.send({
+      data: users,
+    });
   } catch (error) {
     next(error);
   }
@@ -52,14 +64,13 @@ export const detail = async (
   }
 };
 export const patch = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
-    try {
-      res.send('patch');
-    } catch (error) {
-      next(error);
-    }
-  };
-  
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    res.send('patch');
+  } catch (error) {
+    next(error);
+  }
+};
