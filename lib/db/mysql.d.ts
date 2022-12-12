@@ -1,4 +1,4 @@
-import { Session, CollectionDocuments, DocumentOrJSON } from '@mysql/xdevapi';
+import { Session, CollectionDocuments, DocumentOrJSON, Scalar } from '@mysql/xdevapi';
 export declare class Base {
     constructor(properties: {
         schema: string;
@@ -13,7 +13,7 @@ export declare class Base {
     _getCollection(): Promise<import("@mysql/xdevapi/types/lib/DevAPI/Collection").default>;
     find(params?: {
         query?: {
-            [key: string]: any;
+            [key: string]: Scalar;
         };
         pagination?: {
             page: number;

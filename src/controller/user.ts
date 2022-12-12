@@ -3,13 +3,14 @@ import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = new User();
-    const row = await user.add(req.body);
+    const row = await user.post(req.body);
     const ids = row.getGeneratedIds();
-    const nUser = await user.find({
-      query: { _id: ids?.[0] },
-      pagination: { page: 1, size: 20 },
+    const nUser = await user.detail(ids?.[0]);
+    console.log(nUser);
+
+    res.status(201).json({
+      data: nUser,
     });
-    res.status(201).json(nUser);
   } catch (error) {
     next(error);
   }
@@ -28,23 +29,35 @@ export const login = async (
 };
 export const put = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    res.send('put');
+    const user = new User();
+    await user.put(req.params.id, req.body);
+    const nUser = await user.detail(req.params.id);
+    res.status(200).json({
+      data: nUser,
+    });
   } catch (error) {
     next(error);
   }
 };
 export const del = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    res.send('del');
+    const user = new User();
+    await user.del(req.params.id);
+    res.send(req.params.id);
   } catch (error) {
     next(error);
   }
 };
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    debugger;
     const user = new User();
-    const users = await user.find();
+    const users = await user.get({
+      query: req.params as never,
+      pagination: {
+        page: req.params.page ? Number(req.params.page) : 1,
+        size: req.params.size ? Number(req.params.size) : 0,
+      },
+    });
     res.send({
       data: users,
     });
@@ -58,7 +71,13 @@ export const detail = async (
   next: NextFunction,
 ) => {
   try {
-    res.send('detail');
+    const db = new User();
+    console.log(req.params);
+
+    const user = await db.detail(req.params?.id);
+    res.send({
+      data: user,
+    });
   } catch (error) {
     next(error);
   }
