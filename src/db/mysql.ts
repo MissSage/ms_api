@@ -1,15 +1,15 @@
 import {
   Session,
   getSession,
-  CollectionDocuments,
   DocumentOrJSON,
   Scalar,
 } from '@mysql/xdevapi';
+import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
 export class Base {
   constructor(properties: {
     schema: string;
     collection: string;
-    collectionProperties?: string | Record<string, any>;
+    collectionProperties?: string | Options;
   }) {
     this.schema = properties.schema;
     this.collection = properties.collection;
@@ -23,12 +23,16 @@ export class Base {
   schema: string;
   collection: string;
   session: Session;
-  collectionProperties: any;
+  collectionProperties: string | Options;
   /**
    * 连接数据库
    */
   async _connect() {
-    this.session = await getSession(this.collectionProperties);
+    try {
+      this.session = await getSession(this.collectionProperties);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
   /**
    * 连接表
@@ -36,7 +40,9 @@ export class Base {
    */
   async _getCollection() {
     if (!this.session) await this._connect();
-    return this.session.getSchema(this.schema).getCollection(this.collection);
+    return this.session
+      .getSchema(this.schema)
+      .createCollection(this.collection, { reuseExisting: true });
   }
   /**
    * 查询
@@ -52,15 +58,20 @@ export class Base {
       size: number;
     };
     sort?: {
-      type?: 'asc' | 'desc';
+      type?: string; // 'asc' | 'desc';
       field: string;
     };
   }) {
     const collection = await this._getCollection();
     let findStr = '';
-    Object.keys(params?.query || {}).map((key) => {
-      findStr += key + ' = :' + key;
-    });
+    Object.keys(params?.query || {})
+      .filter(
+        (item) =>
+          ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
+      )
+      .map((key) => {
+        findStr += key + ' = :' + key;
+      });
     let find = collection.find(findStr || undefined).bind(params?.query);
 
     if (params.pagination?.size) {
@@ -69,7 +80,8 @@ export class Base {
         .limit(params.pagination.size);
     }
     if (params.sort) {
-      find = find.sort(`${params.sort.field} ${params.sort.type || 'desc'}`);
+      const sortStr: any = `${params.sort.field} ${params.sort.type || 'desc'}`;
+      find = find.sort(sortStr);
     }
     return await (await find.execute()).fetchAll();
   }
@@ -80,7 +92,8 @@ export class Base {
     ).fetchOne();
   }
   // 新增
-  async post(params: CollectionDocuments) {
+  async post(params: DocumentOrJSON) {
+    params['createTime'] = new Date().valueOf()
     const collection = await this._getCollection();
     return collection.add(params).execute();
   }
