@@ -1,0 +1,9 @@
+[
+  {
+    "databaseName": "ms",
+    "apiName": "User",
+    "apiZHName": "用户",
+    "apiDesc": "默认：这是一个新控制器",
+    "collectionName": "user"
+  }
+]

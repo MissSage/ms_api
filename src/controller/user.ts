@@ -2,64 +2,64 @@ import { User } from '../db';
 import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = new User();
-    const row = await user.post(req.body);
+    const db = new User();
+    const row = await db.post(req.body);
     const ids = row.getGeneratedIds();
-    const nUser = await user.detail(ids?.[0]);
-    console.log(nUser);
-
+    const result = await db.detail(ids?.[0]);
     res.status(201).json({
-      data: nUser,
+      data: result,
     });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    res.send('login');
   } catch (error) {
     next(error);
   }
 };
 export const put = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = new User();
-    await user.put(req.params.id, req.body);
-    const nUser = await user.detail(req.params.id);
-    res.status(200).json({
-      data: nUser,
-    });
+    const id = req.params?.id;
+    if (id === undefined) {
+      res.status(400).json({
+        message: '请传入正确的参数id',
+        data: null,
+      });
+    } else {
+      const db = new User();
+      const row = await db.put(req.params.id, req.body);
+      res.status(200).json({
+        data: row,
+        message: '修改成功',
+      });
+    }
   } catch (error) {
     next(error);
   }
 };
 export const del = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = new User();
-    await user.del(req.params.id);
-    res.send(req.params.id);
+    const db = new User();
+    await db.del(req.params.id);
+    res.status(200).json({
+      data: req.params.id,
+    });
   } catch (error) {
     next(error);
   }
 };
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = new User();
-    const users = await user.get({
-      query: req.params as never,
+    const db = new User();
+    const rows = await db.get({
+      query: req.params,
       pagination: {
-        page: req.params.page ? Number(req.params.page) : 1,
-        size: req.params.size ? Number(req.params.size) : 0,
+        page: parseInt(req.params.page) || 1,
+        size: parseInt(req.params.size) || 50,
+      },
+      sort: {
+        type: req.params.sortType || 'asc',
+        field: req.params.sortField || '_id',
       },
     });
-    res.send({
-      data: users,
+    res.status(200).json({
+      data: rows,
     });
   } catch (error) {
     next(error);
@@ -71,13 +71,7 @@ export const detail = async (
   next: NextFunction,
 ) => {
   try {
-    const db = new User();
-    console.log(req.params);
-
-    const user = await db.detail(req.params?.id);
-    res.send({
-      data: user,
-    });
+    res.send('detail');
   } catch (error) {
     next(error);
   }

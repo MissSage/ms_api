@@ -5,13 +5,10 @@
  */
 import express = require('express');
 
-
-import User from './User';
-
+{{routerImports}}
 
 const router = express.Router();
 
-
-router.use(User);
+{{routerUses}}
 
 export default router;

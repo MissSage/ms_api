@@ -1,13 +1,13 @@
-import { Movie } from '../db';
+import { {{apiName}} } from '../db';
 import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const movie = new Movie();
-    const row = await movie.post(req.body);
+    const db = new {{apiName}}();
+    const row = await db.post(req.body);
     const ids = row.getGeneratedIds();
-    const nMovie = await movie.detail(ids?.[0]);
+    const result = await db.detail(ids?.[0]);
     res.status(201).json({
-      data: nMovie,
+      data: result,
     });
   } catch (error) {
     next(error);
@@ -22,8 +22,8 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
         data: null,
       });
     } else {
-      const movie = new Movie();
-      const row = await movie.put(req.params.id, req.body);
+      const db = new {{apiName}}();
+      const row = await db.put(req.params.id, req.body);
       res.status(200).json({
         data: row,
         message: '修改成功',
@@ -35,8 +35,8 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const del = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const movie = new Movie();
-    await movie.del(req.params.id);
+    const db = new {{apiName}}();
+    await db.del(req.params.id);
     res.status(200).json({
       data: req.params.id,
     });
@@ -46,7 +46,7 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new Movie();
+    const db = new {{apiName}}();
     const rows = await db.get({
       query: req.params,
       pagination: {

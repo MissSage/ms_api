@@ -3,7 +3,5 @@
  * 
  * 自动生成，请勿手动修改
  */
-
-export { User } from './document/User';
-
+{{dbImports}}
 export * from '../utils/mysql'

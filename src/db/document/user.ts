@@ -1,4 +1,4 @@
-import { Base } from '../mysql';
+import { Base } from '../../utils/mysql';
 
 export class User extends Base {
   constructor() {

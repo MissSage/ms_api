@@ -16,7 +16,11 @@
     "build:comment": "构建",
     "build": "npm run eslint && npm run prettier && tsc --build",
     "preview:comment": "使用nodemon启动预览服务",
-    "preview": "nodemon lib/index.js"
+    "preview": "nodemon lib/index.js",
+    "gen:comment": "执行gen命令来自动生成控制器和数据库连接，并自动注册接口",
+    "gen": "node ./script/genNewComp/index.js",
+    "clear:comment": "执行clear命令来清除所有业务相关",
+    "clear": "node ./script/genNewComp/clear.js"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +35,9 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.29.0",
     "husky": "^8.0.2",
+    "fs-extra": "^10.0.0",
+    "handlebars": "^4.7.7",
+    "inquirer": "^8.2.0",
     "lint-staged": "^13.1.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.1",

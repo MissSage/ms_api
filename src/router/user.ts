@@ -1,13 +1,12 @@
 import express = require('express');
-import { user } from '../controller/index';
+import { User } from '../controller';
 
 const router = express.Router();
-router.post('/user/login', user.login);
-router.post('/user', user.post);
-router.get('/user/:id', user.detail);
-router.get('/user', user.get);
-router.delete('/user/:id', user.del);
-router.put('/user/:id', user.put);
-router.patch('/user', user.patch);
+router.get('/user/:id', User.detail);
+router.put('/user/:id', User.put);
+router.delete('/user/:id', User.del);
+router.get('/user', User.get);
+router.post('/user', User.post);
+router.patch('/user', User.patch);
 
 export default router;
