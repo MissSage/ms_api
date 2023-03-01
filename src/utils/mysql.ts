@@ -2,9 +2,9 @@ import {
   Session,
   getSession,
   DocumentOrJSON,
-  Scalar,
 } from '@mysql/xdevapi';
 import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
+import { Request } from 'express';
 export class Base {
   constructor(properties: {
     schema: string;
@@ -49,22 +49,10 @@ export class Base {
    * @param params
    * @returns
    */
-  async get(params?: {
-    query?: {
-      [key: string]: Scalar;
-    };
-    pagination?: {
-      page: number;
-      size: number;
-    };
-    sort?: {
-      type?: string; // 'asc' | 'desc';
-      field: string;
-    };
-  }) {
+  async get(params: Request) {
     const collection = await this._getCollection();
     let findStr = '';
-    Object.keys(params?.query || {})
+    Object.keys(params.query || {})
       .filter(
         (item) =>
           ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
@@ -72,18 +60,24 @@ export class Base {
       .map((key) => {
         findStr += key + ' = :' + key;
       });
-    let find = collection.find(findStr || undefined).bind(params?.query);
-
-    if (params.pagination?.size) {
+    let find = collection.find(findStr || undefined).bind(params.query as any);
+    const count = (await find.execute()).fetchAll.length
+    const query: any = params.query
+    const size = query.size
+    const page = query.page
+    if (size !== undefined) {
       find = find
-        .offset((params.pagination.page || 1) * params.pagination.size)
-        .limit(params.pagination.size);
+        .offset((page || 1) * (size || 50))
+        .limit(size);
     }
-    if (params.sort) {
-      const sortStr: any = `${params.sort.field} ${params.sort.type || 'desc'}`;
+    if (query.sortField !== undefined) {
+      const sortStr: any = `${query.sortField} ${query.sortType || 'desc'}`;
       find = find.sort(sortStr);
     }
-    return await (await find.execute()).fetchAll();
+    return {
+      data: await (await find.execute()).fetchAll(),
+      total: count
+    }
   }
   async detail(_id: string) {
     const collection = await this._getCollection();

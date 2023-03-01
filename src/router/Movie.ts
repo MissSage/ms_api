@@ -1,7 +1,7 @@
 import express = require('express');
 import { Movie } from '../controller';
 
-const router = express.Router();
+const router: express.Router = express.Router();
 router.get('/movie/:id', Movie.detail);
 router.put('/movie/:id', Movie.put);
 router.delete('/movie/:id', Movie.del);

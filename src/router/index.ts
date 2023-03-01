@@ -13,7 +13,7 @@ import Movie from './Movie';
 import MovieTags from './MovieTags';
 
 
-const router = express.Router();
+const router: express.Router = express.Router();
 
 
 router.use(User);

@@ -1,7 +1,7 @@
 import express = require('express');
 import { User } from '../controller';
 
-const router = express.Router();
+const router:express.Router = express.Router();
 router.get('/user/:id', User.detail);
 router.put('/user/:id', User.put);
 router.delete('/user/:id', User.del);
