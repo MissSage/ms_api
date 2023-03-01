@@ -6,4 +6,8 @@
 
 export { User } from './document/User';
 
+export { Movie } from './document/Movie';
+
+export { MovieTags } from './document/MovieTags';
+
 export * from '../utils/mysql'

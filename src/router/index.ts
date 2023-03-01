@@ -8,10 +8,16 @@ import express = require('express');
 
 import User from './User';
 
+import Movie from './Movie';
+
+import MovieTags from './MovieTags';
+
 
 const router = express.Router();
 
 
 router.use(User);
+router.use(Movie);
+router.use(MovieTags);
 
 export default router;

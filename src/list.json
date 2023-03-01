@@ -5,5 +5,19 @@
     "apiZHName": "用户",
     "apiDesc": "默认：这是一个新控制器",
     "collectionName": "user"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "Movie",
+    "apiZHName": "电影",
+    "apiDesc": "默认：这是一个新控制器",
+    "collectionName": "movie"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "MovieTags",
+    "apiZHName": "电影标签",
+    "apiDesc": "对电影分类进行标签分类",
+    "collectionName": "movietags"
   }
 ]

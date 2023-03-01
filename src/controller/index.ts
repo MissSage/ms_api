@@ -5,3 +5,7 @@
  */
 
 export * as User from './User';
+
+export * as Movie from './Movie';
+
+export * as MovieTags from './MovieTags';
