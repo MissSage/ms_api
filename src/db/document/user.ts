@@ -7,4 +7,5 @@ export class User extends Base {
       collection: 'user',
     });
   }
+  testProp: () =>string
 }
