@@ -2,6 +2,7 @@ import {
   Session,
   getSession,
   DocumentOrJSON,
+  CollectionFind,
 } from '@mysql/xdevapi';
 import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
 import { Request } from 'express';
@@ -46,29 +47,44 @@ export class Base {
   }
   /**
    * 查询
-   * @param params
+   * @param req 查询条件
+   * @param find 自定义的查询，不配置则进行精确查找
    * @returns
    */
-  async get(params: Request) {
-    const collection = await this._getCollection();
-    let findStr = '';
-    Object.keys(params.query || {})
-      .filter(
-        (item) =>
-          ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
-      )
-      .map((key) => {
-        findStr += key + ' = :' + key;
+  async get(req: Request, find?: CollectionFind) {
+    if (!find) {
+      const collection = await this._getCollection();
+      let findStr = '';
+      const filterkeys = Object.keys(req.query || {})
+        .filter(
+          (item) =>
+            ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
+        )
+      filterkeys.map((key, i) => {
+
+        if (req.query[key] !== null && req.query[key] !== undefined && req.query[key] !== '') {
+          if (findStr !== '') {
+            findStr += ' AND '
+          }
+          findStr += key + ' like :' + key;
+        }
+
       });
-    let find = collection.find(findStr || undefined).bind(params.query as any);
-    const count = (await find.execute()).fetchAll.length
-    const query: any = params.query
+      find = collection.find(findStr || undefined)
+      filterkeys.map(key => {
+        if (req.query[key] !== null && req.query[key] !== undefined && req.query[key] !== '')
+          find.bind(key, '%' + req.query[key] + '%')
+      })
+    }
+
+    const count = (await find.execute()).fetchAll().length
+    const query: any = req.query
     const size = query.size
     const page = query.page
     if (size !== undefined) {
       find = find
-        .offset((page || 1) * (size || 50))
-        .limit(size);
+        .offset((Number(page) || 1) * (Number(size) || 50))
+        .limit(Number(size));
     }
     if (query.sortField !== undefined) {
       const sortStr: any = `${query.sortField} ${query.sortType || 'desc'}`;
@@ -95,7 +111,7 @@ export class Base {
     const collection = await this._getCollection();
     console.log(id, params);
 
-    return await collection
+    return collection
       .modify('_id = :id')
       .patch(params)
       .bind('id', id)

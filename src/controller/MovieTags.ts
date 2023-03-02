@@ -47,17 +47,7 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new MovieTags();
-    const rows = await db.get({
-      query: req.params,
-      pagination: {
-        page: parseInt(req.params.page) || 1,
-        size: parseInt(req.params.size) || 50,
-      },
-      sort: {
-        type: req.params.sortType || 'asc',
-        field: req.params.sortField || '_id',
-      },
-    });
+    const rows = await db.get(req);
     res.status(200).json({
       data: rows,
     });
