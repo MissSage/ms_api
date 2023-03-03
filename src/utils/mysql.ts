@@ -55,32 +55,37 @@ export class Base {
     if (!find) {
       const collection = await this._getCollection();
       let findStr = '';
-      const filterkeys = Object.keys(req.query || {})
-        .filter(
-          (item) =>
-            ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
-        )
-      filterkeys.map((key, i) => {
-
-        if (req.query[key] !== null && req.query[key] !== undefined && req.query[key] !== '') {
+      const filterkeys = Object.keys(req.query || {}).filter(
+        (item) =>
+          ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
+      );
+      filterkeys.map((key) => {
+        if (
+          req.query[key] !== null &&
+          req.query[key] !== undefined &&
+          req.query[key] !== ''
+        ) {
           if (findStr !== '') {
-            findStr += ' AND '
+            findStr += ' AND ';
           }
           findStr += key + ' like :' + key;
         }
-
       });
-      find = collection.find(findStr || undefined)
-      filterkeys.map(key => {
-        if (req.query[key] !== null && req.query[key] !== undefined && req.query[key] !== '')
-          find.bind(key, '%' + req.query[key] + '%')
-      })
+      find = collection.find(findStr || undefined);
+      filterkeys.map((key) => {
+        if (
+          req.query[key] !== null &&
+          req.query[key] !== undefined &&
+          req.query[key] !== ''
+        )
+          find.bind(key, '%' + req.query[key] + '%');
+      });
     }
 
-    const count = (await find.execute()).fetchAll().length
-    const query: any = req.query
-    const size = query.size
-    const page = query.page
+    const count = (await find.execute()).fetchAll().length;
+    const query: any = req.query;
+    const size = query.size;
+    const page = query.page;
     if (size !== undefined) {
       find = find
         .offset((Number(page) || 1) * (Number(size) || 50))
@@ -92,8 +97,8 @@ export class Base {
     }
     return {
       data: await (await find.execute()).fetchAll(),
-      total: count
-    }
+      total: count,
+    };
   }
   async detail(_id: string) {
     const collection = await this._getCollection();
@@ -103,14 +108,12 @@ export class Base {
   }
   // 新增
   async post(params: DocumentOrJSON) {
-    params['createTime'] = new Date().valueOf()
+    params['createTime'] = new Date().valueOf();
     const collection = await this._getCollection();
     return collection.add(params).execute();
   }
   async put(id: string, params: DocumentOrJSON) {
     const collection = await this._getCollection();
-    console.log(id, params);
-
     return collection
       .modify('_id = :id')
       .patch(params)
