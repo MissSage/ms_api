@@ -8,5 +8,5 @@ router.delete('/movie/:id', Movie.del);
 router.get('/movie', Movie.get);
 router.post('/movie', Movie.post);
 router.patch('/movie', Movie.patch);
-
+router.post('/movie/import',Movie.Import)
 export default router;
