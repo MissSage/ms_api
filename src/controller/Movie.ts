@@ -39,9 +39,9 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
 export const del = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new Movie();
-    await db.del(req.params.id);
+    await db.del(req.body.ids);
     res.status(200).json({
-      data: req.params.id,
+
     });
   } catch (error) {
     next(error);
@@ -77,7 +77,9 @@ export const patch = async (
   next: NextFunction,
 ) => {
   try {
-    res.send('patch');
+    const db = await new Movie();
+    await db.patch(req)
+    res.status(200).send({});
   } catch (error) {
     next(error);
   }
@@ -95,17 +97,24 @@ export const Import = async (
 ) => {
   try {
     const inputPath = req.body.path as string;
-    const tags = req.body.tags as string;
     if (!inputPath) next(new Error('path值无效'));
-    const rootPath = resolve(inputPath);
-    let files = await genetaPaths().start(rootPath);
+    let rootPath = resolve(decodeURIComponent(inputPath)).replace(/\\/g, '/');
+    let files = await genetaPaths(['mp4', 'MP4', 'avi', 'ts','mkv','wmv']).start(rootPath);
     if (req.body.replacePath) {
-      const replaceStr = req.body.replacePath.replace(/\\/g, '/');
+      let replaceStr = decodeURIComponent(req.body.replacePath).replace(/\\/g, '/');
       console.log('正在更换根路径');
+      if (rootPath.endsWith('/')) {
+        rootPath = rootPath.substring(0, rootPath.length - 1)
+      }
+      if (replaceStr.endsWith('/')) {
+        replaceStr = replaceStr.substring(0, replaceStr.length - 1)
+      }
+      console.log('rootPath', rootPath);
+      console.log('replaceStr', replaceStr);
       files = files.map((item) => {
         item.path = item.path
           .replace(/\\/g, '/')
-          .replace(inputPath, replaceStr);
+          .replace(rootPath, replaceStr);
         return item;
       });
     }
@@ -114,9 +123,10 @@ export const Import = async (
     files.map((item) => {
       const row = {
         title: item.name,
+        ...((req.query.body as any) || {}),
         url: item.path,
-        img: '',
-        tags,
+        img: decodeURIComponent(req.body.img).replace(/\\/g, '/'),
+        tags: req.body.tags,
         createTime: new Date().valueOf(),
       };
       if (add) {

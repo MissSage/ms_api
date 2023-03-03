@@ -51,53 +51,62 @@ export class Base {
    * @param find 自定义的查询，不配置则进行精确查找
    * @returns
    */
-  async get(req: Request, find?: CollectionFind) {
-    if (!find) {
-      const collection = await this._getCollection();
-      let findStr = '';
-      const filterkeys = Object.keys(req.query || {}).filter(
-        (item) =>
-          ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
-      );
-      filterkeys.map((key) => {
-        if (
-          req.query[key] !== null &&
-          req.query[key] !== undefined &&
-          req.query[key] !== ''
-        ) {
-          if (findStr !== '') {
-            findStr += ' AND ';
-          }
+  async get(req: Request) {
+    const collection = await this._getCollection();
+    let findStr = '';
+    const query: any = req.query;
+
+    const filterkeys = Object.keys(req.query || {}).filter(
+      (item) =>
+        ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
+    );
+    filterkeys.map((key) => {
+      if (
+        req.query[key] !== null &&
+        req.query[key] !== undefined &&
+        req.query[key] !== ''
+      ) {
+        if (findStr !== '') {
+          findStr += ' AND ';
+        }
+        if (['startTime', 'endTime'].indexOf(key) !== -1) {
+          findStr += 'createTime' + (key === 'startTime' ? ' > :' : ' < :') + key;
+        } else {
           findStr += key + ' like :' + key;
         }
-      });
-      find = collection.find(findStr || undefined);
-      filterkeys.map((key) => {
-        if (
-          req.query[key] !== null &&
-          req.query[key] !== undefined &&
-          req.query[key] !== ''
-        )
-          find.bind(key, '%' + req.query[key] + '%');
-      });
-    }
+      }
+    });
+    let find = collection.find(findStr || undefined)
 
-    const count = (await find.execute()).fetchAll().length;
-    const query: any = req.query;
-    const size = query.size;
-    const page = query.page;
-    if (size !== undefined) {
-      find = find
-        .offset((Number(page) || 1) * (Number(size) || 50))
-        .limit(Number(size));
-    }
+    filterkeys.map((key) => {
+      if (
+        req.query[key] !== null &&
+        req.query[key] !== undefined &&
+        req.query[key] !== ''
+      ) {
+        if (['startTime', 'endTime'].indexOf(key) !== -1) {
+          find.bind(key, Number(req.query[key]))
+        } else {
+          find.bind(key, '%' + req.query[key] + '%')
+        }
+      }
+    });
     if (query.sortField !== undefined) {
       const sortStr: any = `${query.sortField} ${query.sortType || 'desc'}`;
       find = find.sort(sortStr);
     }
+    const count = (await find.execute()).fetchAll().length;
+    const size = Number(query.size || '20');
+    const page = Number(query.page || '1');
+    find = find
+      .limit(size)
+      .offset((page - 1) * size)
+
+    const exed = await find.execute()
+    const data = await exed.fetchAll()
     return {
-      data: await (await find.execute()).fetchAll(),
-      total: count,
+      data: data || [],
+      total: count || 0,
     };
   }
   async detail(_id: string) {
@@ -120,8 +129,21 @@ export class Base {
       .bind('id', id)
       .execute();
   }
-  async del(id: string) {
+  async patch(req: Request) {
     const collection = await this._getCollection();
-    return collection.remove('_id=:id').bind('id', id).execute();
+    const ids = req.body.ids
+    const params = req.body.params
+    if (!ids || !params) return
+    const modi = collection.modify('_id = :id').patch(req.body.params)
+    ids.map(item => {
+      modi.bind('id', item).execute()
+    })
+  }
+  async del(ids: string[]) {
+    const collection = await this._getCollection();
+    const remove = collection.remove('_id=:id')
+    ids?.map(item => {
+      remove.bind('id', item).execute()
+    })
   }
 }
