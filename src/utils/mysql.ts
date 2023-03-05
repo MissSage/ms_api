@@ -1,8 +1,7 @@
 import {
   Session,
   getSession,
-  DocumentOrJSON,
-  CollectionFind,
+  DocumentOrJSON
 } from '@mysql/xdevapi';
 import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
 import { Request } from 'express';
@@ -19,6 +18,7 @@ export class Base {
       password: '960124',
       host: 'localhost',
       port: 33060,
+      connectTimeout: 180000
     };
   }
   schema: string;
@@ -29,18 +29,15 @@ export class Base {
    * 连接数据库
    */
   async _connect() {
-    try {
-      this.session = await getSession(this.collectionProperties);
-    } catch (error) {
-      console.log(error.message);
-    }
+    this.session = await getSession(this.collectionProperties);
+    console.log('数据库已连接');
   }
   /**
    * 连接表
    * @returns
    */
   async _getCollection() {
-    if (!this.session) await this._connect();
+    await this._connect();
     return this.session
       .getSchema(this.schema)
       .createCollection(this.collection, { reuseExisting: true });
@@ -51,9 +48,9 @@ export class Base {
    * @param find 自定义的查询，不配置则进行精确查找
    * @returns
    */
-  async get(req: Request) {
+  async get(req: Request, findStr?: string) {
     const collection = await this._getCollection();
-    let findStr = '';
+    findStr = findStr || ''
     const query: any = req.query;
 
     const filterkeys = Object.keys(req.query || {}).filter(
@@ -111,23 +108,26 @@ export class Base {
   }
   async detail(_id: string) {
     const collection = await this._getCollection();
-    return await (
+    const res = await (
       await collection.find('_id = :_id').bind('_id', _id).execute()
     ).fetchOne();
+    return res
   }
   // 新增
   async post(params: DocumentOrJSON) {
     params['createTime'] = new Date().valueOf();
     const collection = await this._getCollection();
-    return collection.add(params).execute();
+    const res = await collection.add(params).execute();
+    return res
   }
   async put(id: string, params: DocumentOrJSON) {
     const collection = await this._getCollection();
-    return collection
+    const res = await collection
       .modify('_id = :id')
-      .patch(params)
+      .patch({ ...(params as object), 'updateTime': new Date().valueOf() })
       .bind('id', id)
       .execute();
+    return res
   }
   async patch(req: Request) {
     const collection = await this._getCollection();
@@ -135,15 +135,21 @@ export class Base {
     const params = req.body.params
     if (!ids || !params) return
     const modi = collection.modify('_id = :id').patch(req.body.params)
+    const proS: any[] = []
     ids.map(item => {
-      modi.bind('id', item).execute()
+      proS.push(modi.bind('id', item).execute())
     })
+    const res = await Promise.all(proS)
+    return res
   }
   async del(ids: string[]) {
     const collection = await this._getCollection();
     const remove = collection.remove('_id=:id')
+    const proS = []
     ids?.map(item => {
-      remove.bind('id', item).execute()
+      proS.push(remove.bind('id', item).execute())
     })
+    const res = await Promise.all(proS)
+    return res
   }
 }

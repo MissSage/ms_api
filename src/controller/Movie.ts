@@ -1,6 +1,6 @@
 import { Movie } from '../db';
 import { Request, Response, NextFunction } from 'express';
-import { genetaPaths } from '../utils/fileHelper';
+import { base64ToImage, genetaPaths } from '../utils/fileHelper';
 import { resolve } from 'path';
 import { CollectionAdd } from '@mysql/xdevapi';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
@@ -50,7 +50,12 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new Movie();
-    const rows = await db.get(req);
+    let findStr = ''
+    if (req.query.direct) {
+      findStr = "'" + req.query.direct + "' in directs[*]"
+    }
+    delete req.query['direct']
+    const rows = await db.get(req, findStr);
     res.status(200).json(rows);
   } catch (error) {
     next(error);
@@ -99,7 +104,9 @@ export const Import = async (
     const inputPath = req.body.path as string;
     if (!inputPath) next(new Error('path值无效'));
     let rootPath = resolve(decodeURIComponent(inputPath)).replace(/\\/g, '/');
-    let files = await genetaPaths(['mp4', 'MP4', 'avi', 'ts','mkv','wmv']).start(rootPath);
+    let files = await genetaPaths([
+      'mp4', 'MP4', 'avi', 'ts', 'mkv', 'wmv',
+      'mov']).readFile(rootPath, []);
     if (req.body.replacePath) {
       let replaceStr = decodeURIComponent(req.body.replacePath).replace(/\\/g, '/');
       console.log('正在更换根路径');
@@ -118,7 +125,8 @@ export const Import = async (
         return item;
       });
     }
-    const collection = await new Movie()._getCollection();
+    const db = new Movie()
+    const collection =await  db._getCollection();
     let add: CollectionAdd = undefined;
     files.map((item) => {
       const row = {
@@ -127,6 +135,7 @@ export const Import = async (
         url: item.path,
         img: decodeURIComponent(req.body.img).replace(/\\/g, '/'),
         tags: req.body.tags,
+        directs: item.directs || [],
         createTime: new Date().valueOf(),
       };
       if (add) {
@@ -135,7 +144,7 @@ export const Import = async (
         add = collection.add(row);
       }
     });
-    const result = await add.execute();
+    const result = await add?.execute();
     res.status(200).json({
       data: result,
     });
@@ -143,3 +152,35 @@ export const Import = async (
     next(error);
   }
 };
+/**
+ * 上传图片base64生成图片并保存路径到对应视频数据
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export const postImage = async (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id
+  const data = req.body.data
+  const server = req.body.rootPath
+  if (!id || !data) {
+    next(new Error('未上传数据'))
+  } else {
+
+    let url = server&&decodeURIComponent(server)
+    if (!url) url = 'http://localhost/images/'
+    if (!url.endsWith('/')) {
+      url = url + '/'
+    }
+    url += id + '.png'
+    try {
+      await base64ToImage(id, data)
+      const db = new Movie()
+      await db.put(id, { img: url })
+      res.status(200).send({
+        data: url
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+}

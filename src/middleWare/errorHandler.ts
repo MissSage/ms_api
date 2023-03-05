@@ -2,8 +2,11 @@ import { Response } from 'express';
 import util = require('util');
 const erorrHandler = () => {
   return (err, req, res: Response, next) => {
+    console.log();
+    const e = util.format(err)
+    console.log(e);
     res.status(500).json({
-      error: util.format(err),
+      error: e,
     });
   };
 };
