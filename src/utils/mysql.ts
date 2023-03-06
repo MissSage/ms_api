@@ -1,8 +1,4 @@
-import {
-  Session,
-  getSession,
-  DocumentOrJSON
-} from '@mysql/xdevapi';
+import { Session, getSession, DocumentOrJSON } from '@mysql/xdevapi';
 import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
 import { Request } from 'express';
 export class Base {
@@ -18,7 +14,7 @@ export class Base {
       password: '960124',
       host: 'localhost',
       port: 33060,
-      connectTimeout: 180000
+      connectTimeout: 180000,
     };
   }
   schema: string;
@@ -50,12 +46,11 @@ export class Base {
    */
   async get(req: Request, findStr?: string) {
     const collection = await this._getCollection();
-    findStr = findStr || ''
+    findStr = findStr || '';
     const query: any = req.query;
 
     const filterkeys = Object.keys(req.query || {}).filter(
-      (item) =>
-        ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
+      (item) => ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
     );
     filterkeys.map((key) => {
       if (
@@ -67,13 +62,14 @@ export class Base {
           findStr += ' AND ';
         }
         if (['startTime', 'endTime'].indexOf(key) !== -1) {
-          findStr += 'createTime' + (key === 'startTime' ? ' > :' : ' < :') + key;
+          findStr +=
+            'createTime' + (key === 'startTime' ? ' > :' : ' < :') + key;
         } else {
           findStr += key + ' like :' + key;
         }
       }
     });
-    let find = collection.find(findStr || undefined)
+    let find = collection.find(findStr || undefined);
 
     filterkeys.map((key) => {
       if (
@@ -82,9 +78,9 @@ export class Base {
         req.query[key] !== ''
       ) {
         if (['startTime', 'endTime'].indexOf(key) !== -1) {
-          find.bind(key, Number(req.query[key]))
+          find.bind(key, Number(req.query[key]));
         } else {
-          find.bind(key, '%' + req.query[key] + '%')
+          find.bind(key, '%' + req.query[key] + '%');
         }
       }
     });
@@ -95,12 +91,10 @@ export class Base {
     const count = (await find.execute()).fetchAll().length;
     const size = Number(query.size || '20');
     const page = Number(query.page || '1');
-    find = find
-      .limit(size)
-      .offset((page - 1) * size)
+    find = find.limit(size).offset((page - 1) * size);
 
-    const exed = await find.execute()
-    const data = await exed.fetchAll()
+    const exed = await find.execute();
+    const data = await exed.fetchAll();
     return {
       data: data || [],
       total: count || 0,
@@ -111,45 +105,45 @@ export class Base {
     const res = await (
       await collection.find('_id = :_id').bind('_id', _id).execute()
     ).fetchOne();
-    return res
+    return res;
   }
   // 新增
   async post(params: DocumentOrJSON) {
     params['createTime'] = new Date().valueOf();
     const collection = await this._getCollection();
     const res = await collection.add(params).execute();
-    return res
+    return res;
   }
   async put(id: string, params: DocumentOrJSON) {
     const collection = await this._getCollection();
     const res = await collection
       .modify('_id = :id')
-      .patch({ ...(params as object), 'updateTime': new Date().valueOf() })
+      .patch({ ...(params as object), updateTime: new Date().valueOf() })
       .bind('id', id)
       .execute();
-    return res
+    return res;
   }
   async patch(req: Request) {
     const collection = await this._getCollection();
-    const ids = req.body.ids
-    const params = req.body.params
-    if (!ids || !params) return
-    const modi = collection.modify('_id = :id').patch(req.body.params)
-    const proS: any[] = []
-    ids.map(item => {
-      proS.push(modi.bind('id', item).execute())
-    })
-    const res = await Promise.all(proS)
-    return res
+    const ids = req.body.ids;
+    const params = req.body.params;
+    if (!ids || !params) return;
+    const modi = collection.modify('_id = :id').patch(req.body.params);
+    const proS: any[] = [];
+    ids.map((item) => {
+      proS.push(modi.bind('id', item).execute());
+    });
+    const res = await Promise.all(proS);
+    return res;
   }
   async del(ids: string[]) {
     const collection = await this._getCollection();
-    const remove = collection.remove('_id=:id')
-    const proS = []
-    ids?.map(item => {
-      proS.push(remove.bind('id', item).execute())
-    })
-    const res = await Promise.all(proS)
-    return res
+    const remove = collection.remove('_id=:id');
+    const proS = [];
+    ids?.map((item) => {
+      proS.push(remove.bind('id', item).execute());
+    });
+    const res = await Promise.all(proS);
+    return res;
   }
 }

@@ -1,7 +1,7 @@
 import express = require('express');
 import { MovieTags } from '../controller';
 
-const router:express.Router = express.Router();
+const router: express.Router = express.Router();
 router.get('/movietags/:id', MovieTags.detail);
 router.put('/movietags/:id', MovieTags.put);
 router.delete('/movietags/:id', MovieTags.del);

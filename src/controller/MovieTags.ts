@@ -3,21 +3,23 @@ import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new MovieTags();
-    const tags = req.body.tags
+    const tags = req.body.tags;
     if (tags?.length) {
       const collection = await db._getCollection();
-      const pS = []
-      tags.map(item => {
+      const pS = [];
+      tags.map((item) => {
         pS.push(
-          collection.add({
-            name: item, createTime: new Date().valueOf()
-          }).execute()
-        )
-      })
-      await Promise.all(pS)
-      res.status(200).json({})
+          collection
+            .add({
+              name: item,
+              createTime: new Date().valueOf(),
+            })
+            .execute(),
+        );
+      });
+      await Promise.all(pS);
+      res.status(200).json({});
     }
-
   } catch (error) {
     next(error);
   }

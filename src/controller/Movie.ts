@@ -40,9 +40,7 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new Movie();
     await db.del(req.body.ids);
-    res.status(200).json({
-
-    });
+    res.status(200).json({});
   } catch (error) {
     next(error);
   }
@@ -50,11 +48,11 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new Movie();
-    let findStr = ''
+    let findStr = '';
     if (req.query.direct) {
-      findStr = "'" + req.query.direct + "' in directs[*]"
+      findStr = "'" + req.query.direct + "' in directs[*]";
     }
-    delete req.query['direct']
+    delete req.query['direct'];
     const rows = await db.get(req, findStr);
     res.status(200).json(rows);
   } catch (error) {
@@ -83,7 +81,7 @@ export const patch = async (
 ) => {
   try {
     const db = await new Movie();
-    await db.patch(req)
+    await db.patch(req);
     res.status(200).send({});
   } catch (error) {
     next(error);
@@ -105,28 +103,35 @@ export const Import = async (
     if (!inputPath) next(new Error('path值无效'));
     let rootPath = resolve(decodeURIComponent(inputPath)).replace(/\\/g, '/');
     let files = await genetaPaths([
-      'mp4', 'MP4', 'avi', 'ts', 'mkv', 'wmv',
-      'mov']).readFile(rootPath, []);
+      'mp4',
+      'MP4',
+      'avi',
+      'ts',
+      'mkv',
+      'wmv',
+      'mov',
+    ]).readFile(rootPath, []);
     if (req.body.replacePath) {
-      let replaceStr = decodeURIComponent(req.body.replacePath).replace(/\\/g, '/');
+      let replaceStr = decodeURIComponent(req.body.replacePath).replace(
+        /\\/g,
+        '/',
+      );
       console.log('正在更换根路径');
       if (rootPath.endsWith('/')) {
-        rootPath = rootPath.substring(0, rootPath.length - 1)
+        rootPath = rootPath.substring(0, rootPath.length - 1);
       }
       if (replaceStr.endsWith('/')) {
-        replaceStr = replaceStr.substring(0, replaceStr.length - 1)
+        replaceStr = replaceStr.substring(0, replaceStr.length - 1);
       }
       console.log('rootPath', rootPath);
       console.log('replaceStr', replaceStr);
       files = files.map((item) => {
-        item.path = item.path
-          .replace(/\\/g, '/')
-          .replace(rootPath, replaceStr);
+        item.path = item.path.replace(/\\/g, '/').replace(rootPath, replaceStr);
         return item;
       });
     }
-    const db = new Movie()
-    const collection =await  db._getCollection();
+    const db = new Movie();
+    const collection = await db._getCollection();
     let add: CollectionAdd = undefined;
     files.map((item) => {
       const row = {
@@ -154,33 +159,36 @@ export const Import = async (
 };
 /**
  * 上传图片base64生成图片并保存路径到对应视频数据
- * @param req 
- * @param res 
- * @param next 
+ * @param req
+ * @param res
+ * @param next
  */
-export const postImage = async (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id
-  const data = req.body.data
-  const server = req.body.rootPath
+export const postImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const id = req.params.id;
+  const data = req.body.data;
+  const server = req.body.rootPath;
   if (!id || !data) {
-    next(new Error('未上传数据'))
+    next(new Error('未上传数据'));
   } else {
-
-    let url = server&&decodeURIComponent(server)
-    if (!url) url = 'http://localhost/images/'
+    let url = server && decodeURIComponent(server);
+    if (!url) url = 'http://localhost/images/';
     if (!url.endsWith('/')) {
-      url = url + '/'
+      url = url + '/';
     }
-    url += id + '.png'
+    url += id + '.png';
     try {
-      await base64ToImage(id, data)
-      const db = new Movie()
-      await db.put(id, { img: url })
+      await base64ToImage(id, data);
+      const db = new Movie();
+      await db.put(id, { img: url });
       res.status(200).send({
-        data: url
-      })
+        data: url,
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
-}
+};

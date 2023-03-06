@@ -1,6 +1,6 @@
-/** 
+/**
  * !--------- WARNING ----------!
- * 
+ *
  * 自动生成，请勿手动修改
  */
 
@@ -10,4 +10,4 @@ export { Movie } from './document/Movie';
 
 export { MovieTags } from './document/MovieTags';
 
-export * from '../utils/mysql'
+export * from '../utils/mysql';

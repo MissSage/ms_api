@@ -1,14 +1,38 @@
-import mysqlx = require('@mysql/xdevapi');
-export declare const connect: () => Promise<mysqlx.Session>;
-/**
- * 连接到ms数据库下的指定表名
- * @param tableName 表名
- * @returns
- */
-export declare const getCollection: (session: mysqlx.Session, schemaName: string, collectionName: string) => Promise<mysqlx.Collection>;
-export declare const getTable: (session: mysqlx.Session, schemaName: string, tableName: string) => Promise<mysqlx.Table>;
-/**
- * 检查数据库表，如果没有则生成
- */
-export declare const initTables: (session: mysqlx.Session, schemaName: string) => Promise<void>;
-export declare const test: () => Promise<void>;
+import { Session, DocumentOrJSON } from '@mysql/xdevapi';
+import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
+import { Request } from 'express';
+export declare class Base {
+    constructor(properties: {
+        schema: string;
+        collection: string;
+        collectionProperties?: string | Options;
+    });
+    schema: string;
+    collection: string;
+    session: Session;
+    collectionProperties: string | Options;
+    /**
+     * 连接数据库
+     */
+    _connect(): Promise<void>;
+    /**
+     * 连接表
+     * @returns
+     */
+    _getCollection(): Promise<import("@mysql/xdevapi/types/lib/DevAPI/Collection").default>;
+    /**
+     * 查询
+     * @param req 查询条件
+     * @param find 自定义的查询，不配置则进行精确查找
+     * @returns
+     */
+    get(req: Request, findStr?: string): Promise<{
+        data: import("@mysql/xdevapi").Document[];
+        total: number;
+    }>;
+    detail(_id: string): Promise<import("@mysql/xdevapi").Document>;
+    post(params: DocumentOrJSON): Promise<import("@mysql/xdevapi/types/lib/DevAPI/Result").default>;
+    put(id: string, params: DocumentOrJSON): Promise<import("@mysql/xdevapi/types/lib/DevAPI/Result").default>;
+    patch(req: Request): Promise<any[]>;
+    del(ids: string[]): Promise<any[]>;
+}
