@@ -1,4 +1,4 @@
-import { Session, getSession, DocumentOrJSON } from '@mysql/xdevapi';
+import { Session, DocumentOrJSON, getSession, Collection } from '@mysql/xdevapi';
 import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
 import { Request } from 'express';
 export class Base {
@@ -14,7 +14,7 @@ export class Base {
       password: '960124',
       host: 'localhost',
       port: 33060,
-      connectTimeout: 180000,
+      connectTimeout: 10000,
     };
   }
   schema: string;
@@ -22,21 +22,21 @@ export class Base {
   session: Session;
   collectionProperties: string | Options;
   /**
-   * 连接数据库
-   */
-  async _connect() {
-    this.session = await getSession(this.collectionProperties);
-    console.log('数据库已连接');
-  }
-  /**
    * 连接表
    * @returns
    */
-  async _getCollection() {
-    await this._connect();
-    return this.session
-      .getSchema(this.schema)
-      .createCollection(this.collection, { reuseExisting: true });
+  async _getCollection(): Promise<Collection | undefined> {
+    try {
+
+      this.session = await getSession(this.collectionProperties);
+      console.log('数据库已连接');
+      return this.session
+        .getSchema(this.schema)
+        .createCollection(this.collection, { reuseExisting: true });
+    } catch (error) {
+      throw new Error(error)
+    }
+
   }
   /**
    * 查询
