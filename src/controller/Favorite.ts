@@ -47,10 +47,8 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new Favorite();
-    const rows = await db.get(req);
-    res.status(200).json({
-      data: rows,
-    });
+    const rows = await db.get(req.query);
+    res.status(200).json(rows);
   } catch (error) {
     next(error);
   }
@@ -77,3 +75,25 @@ export const patch = async (
     next(error);
   }
 };
+
+export const toggle = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.body.movieId) {
+      next(new Error('未传入movieId'))
+    } else {
+      const db = new Favorite()
+      const rows = await db.get(req.body)
+      if (!rows.data.length) {
+        await db.post(req.body)
+      } else {
+        await db.del(rows.data.map(item => item._id.toString()))
+      }
+      res.status(200).send({
+        message: rows.data.length ? '已取消' : '收藏成功'
+      })
+    }
+
+  } catch (error) {
+    next(error)
+  }
+}

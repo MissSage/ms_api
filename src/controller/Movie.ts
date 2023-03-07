@@ -1,4 +1,4 @@
-import { Movie } from '../db';
+import { Movie, Favorite } from '../db';
 import { Request, Response, NextFunction } from 'express';
 import { base64ToImage, genetaPaths } from '../utils/fileHelper';
 import { resolve } from 'path';
@@ -52,7 +52,7 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
       findStr = "'" + req.query.direct + "' in directs[*]";
     }
     delete req.query['direct'];
-    const rows = await db.get(req, findStr);
+    const rows = await db.get(req.query, findStr);
     res.status(200).json(rows);
   } catch (error) {
     next(error);
@@ -185,3 +185,25 @@ export const postImage = async (
     }
   }
 };
+
+export const favours = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const favourDB = new Favorite()
+    const favours = await favourDB.get()
+    const db = new Movie()
+    const ids = favours.data.map(item => item.movieId)
+    const result = await db.findByIds(ids)
+    res.status(200).send({
+      data: result,
+      total: result.length,
+      message: '操作成功'
+    })
+  } catch (error) {
+    next(error)
+  }
+
+}

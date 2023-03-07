@@ -47,10 +47,8 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new User();
-    const rows = await db.get(req);
-    res.status(200).json({
-      data: rows,
-    });
+    const rows = await db.get(req.query);
+    res.status(200).json(rows);
   } catch (error) {
     next(error);
   }

@@ -1,4 +1,4 @@
-import { Session, DocumentOrJSON, getSession, Collection, CollectionAdd } from '@mysql/xdevapi';
+import { Session, DocumentOrJSON, getSession, Collection, CollectionAdd, Any } from '@mysql/xdevapi';
 import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
 import { Request } from 'express';
 export class Base {
@@ -8,7 +8,7 @@ export class Base {
     collectionProperties?: string | Options;
   }) {
     this.schema = properties.schema;
-    this.collection = properties.collection;
+    this.collectionName = properties.collection;
     this.collectionProperties = properties.collectionProperties || {
       user: 'root',
       password: '960124',
@@ -18,7 +18,7 @@ export class Base {
     };
   }
   schema: string;
-  collection: string;
+  collectionName: string;
   session: Session;
   collectionProperties: string | Options;
   /**
@@ -31,7 +31,7 @@ export class Base {
       this.session = await getSession(this.collectionProperties);
       return this.session
         .getSchema(this.schema)
-        .createCollection(this.collection, { reuseExisting: true });
+        .createCollection(this.collectionName, { reuseExisting: true });
     } catch (error) {
       throw new Error(error)
     }
@@ -50,19 +50,17 @@ export class Base {
    * @param find 自定义的查询，不配置则进行精确查找
    * @returns
    */
-  async get(req: Request, findStr?: string) {
+  async get(query: Record<string, any> = {}, findStr?: string) {
     const collection = await this._getCollection();
     findStr = findStr || '';
-    const query: any = req.query;
-
-    const filterkeys = Object.keys(req.query || {}).filter(
+    const filterkeys = Object.keys(query || {}).filter(
       (item) => ['sortType', 'sortField', 'page', 'size'].indexOf(item) === -1,
     );
     filterkeys.map((key) => {
       if (
-        req.query[key] !== null &&
-        req.query[key] !== undefined &&
-        req.query[key] !== ''
+        query[key] !== null &&
+        query[key] !== undefined &&
+        query[key] !== ''
       ) {
         if (findStr !== '') {
           findStr += ' AND ';
@@ -79,14 +77,14 @@ export class Base {
 
     filterkeys.map((key) => {
       if (
-        req.query[key] !== null &&
-        req.query[key] !== undefined &&
-        req.query[key] !== ''
+        query[key] !== null &&
+        query[key] !== undefined &&
+        query[key] !== ''
       ) {
         if (['startTime', 'endTime'].indexOf(key) !== -1) {
-          find.bind(key, Number(req.query[key]));
+          find.bind(key, Number(query[key]));
         } else {
-          find.bind(key, '%' + req.query[key] + '%');
+          find.bind(key, '%' + query[key] + '%');
         }
       }
     });
@@ -95,9 +93,11 @@ export class Base {
       find = find.sort(sortStr);
     }
     const count = (await find.execute()).fetchAll().length;
-    const size = Number(query.size || '20');
-    const page = Number(query.page || '1');
-    find = find.limit(size).offset((page - 1) * size);
+    if (query.page && query.size) {
+      const size = Number(query.size);
+      const page = Number(query.page);
+      find = find.limit(size).offset((page - 1) * size);
+    }
 
     const exed = await find.execute();
     const data = await exed.fetchAll();
@@ -116,6 +116,18 @@ export class Base {
     const collection = await this._getCollection();
     const find = await collection.find('_id = :_id').bind('_id', _id).execute()
     const res = await find.fetchOne();
+    await this._dispose()
+    return res;
+  }
+  async findByIds(ids: any[]) {
+    const collection = await this._getCollection();
+    const find = collection.find('_id = :id')
+    const proS: any[] = [];
+    ids.map((item) => {
+      proS.push(find.bind('id', item).execute());
+    });
+    let res = await Promise.all(proS);
+    res = res.map(item=>item.fetchOne())
     await this._dispose()
     return res;
   }

@@ -8,5 +8,5 @@ router.delete('/favorite/:id', Favorite.del);
 router.get('/favorite', Favorite.get);
 router.post('/favorite', Favorite.post);
 router.patch('/favorite', Favorite.patch);
-
+router.post('/favorite/toggle',Favorite.toggle)
 export default router;

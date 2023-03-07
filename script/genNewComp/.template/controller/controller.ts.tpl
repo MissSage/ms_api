@@ -48,9 +48,9 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new {{apiName}}();
-    const rows = await db.get(req);
+    const rows = await db.get(req.query);
     res.status(200).json({
-      data: rows,
+      ...(rows||{}),
       message: '操作成功'
     });
   } catch (error) {
