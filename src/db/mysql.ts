@@ -1,4 +1,4 @@
-import { Session, DocumentOrJSON, getSession, Collection, CollectionAdd, Any } from '@mysql/xdevapi';
+import { Session, DocumentOrJSON, getSession, Collection, CollectionAdd } from '@mysql/xdevapi';
 import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
 import { Request } from 'express';
 export class Base {
