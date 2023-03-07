@@ -7,4 +7,5 @@ export class {{apiName}} extends Base {
       collection: '{{collectionName}}',
     });
   }
+  // 这里写特有逻辑方法
 }

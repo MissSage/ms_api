@@ -1,4 +1,4 @@
-import { Base } from '../../utils/mysql';
+import { Base } from '../mysql';
 
 export class MovieTags extends Base {
   constructor() {

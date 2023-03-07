@@ -2,7 +2,6 @@ import { Movie } from '../db';
 import { Request, Response, NextFunction } from 'express';
 import { base64ToImage, genetaPaths } from '../utils/fileHelper';
 import { resolve } from 'path';
-import { CollectionAdd } from '@mysql/xdevapi';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new Movie();
@@ -131,9 +130,7 @@ export const Import = async (
       });
     }
     const db = new Movie();
-    const collection = await db._getCollection();
-    let add: CollectionAdd = undefined;
-    files.map((item) => {
+    const rows = files.map((item) => {
       const row = {
         title: item.name,
         ...((req.query.body as any) || {}),
@@ -143,13 +140,9 @@ export const Import = async (
         directs: item.directs || [],
         createTime: new Date().valueOf(),
       };
-      if (add) {
-        add = add.add(row);
-      } else {
-        add = collection.add(row);
-      }
+      return row
     });
-    const result = await add?.execute();
+    const result = await db.addMany(rows)
     res.status(200).json({
       data: result,
     });

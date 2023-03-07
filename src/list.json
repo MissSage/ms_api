@@ -19,5 +19,12 @@
     "apiZHName": "电影标签",
     "apiDesc": "对电影分类进行标签分类",
     "collectionName": "movietags"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "Favorite",
+    "apiZHName": "喜欢",
+    "apiDesc": "收藏喜欢的资源",
+    "collectionName": "favorite"
   }
 ]

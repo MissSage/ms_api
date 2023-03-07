@@ -1,12 +1,18 @@
 import express = require('express');
 import { {{apiName}} } from '../controller';
 
-const router = express.Router();
+const router:express.Router = express.Router();
+// 详情
 router.get('/{{collectionName}}/:id', {{apiName}}.detail);
-router.put('/{{collectionName}}/:id', {{apiName}}.put);
-router.delete('/{{collectionName}}/:id', {{apiName}}.del);
+// 列表
 router.get('/{{collectionName}}', {{apiName}}.get);
+// 修改
+router.put('/{{collectionName}}/:id', {{apiName}}.put);
+// 批量删除
+router.delete('/{{collectionName}}', {{apiName}}.del);
+// 新增
 router.post('/{{collectionName}}', {{apiName}}.post);
+// 批量修改
 router.patch('/{{collectionName}}', {{apiName}}.patch);
 
 export default router;

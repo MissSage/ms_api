@@ -7,6 +7,7 @@ export const post = async (req: Request, res: Response, next: NextFunction) => {
     const ids = row.getGeneratedIds();
     const result = await db.detail(ids?.[0]);
     res.status(201).json({
+      message: '操作成功',
       data: result,
     });
   } catch (error) {
@@ -26,7 +27,7 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
       const row = await db.put(req.params.id, req.body);
       res.status(200).json({
         data: row,
-        message: '修改成功',
+        message: '操作成功',
       });
     }
   } catch (error) {
@@ -38,7 +39,7 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
     const db = new {{apiName}}();
     await db.del(req.params.id);
     res.status(200).json({
-      data: req.params.id,
+      message: '操作成功'
     });
   } catch (error) {
     next(error);
@@ -47,19 +48,10 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new {{apiName}}();
-    const rows = await db.get({
-      query: req.params,
-      pagination: {
-        page: parseInt(req.params.page) || 1,
-        size: parseInt(req.params.size) || 50,
-      },
-      sort: {
-        type: req.params.sortType || 'asc',
-        field: req.params.sortField || '_id',
-      },
-    });
+    const rows = await db.get(req);
     res.status(200).json({
       data: rows,
+      message: '操作成功'
     });
   } catch (error) {
     next(error);
@@ -71,7 +63,12 @@ export const detail = async (
   next: NextFunction,
 ) => {
   try {
-    res.send('detail');
+    const db = new {{apiName}}();
+    const row = await db.detail(req.params.id as string);
+    res.status(200).json({
+      data: row,
+      message: '操作成功'
+    });
   } catch (error) {
     next(error);
   }
@@ -82,7 +79,11 @@ export const patch = async (
   next: NextFunction,
 ) => {
   try {
-    res.send('patch');
+    const db = await new {{apiName}}();
+    await db.patch(req);
+    res.status(200).send({
+      message: '操作成功'
+    });
   } catch (error) {
     next(error);
   }
