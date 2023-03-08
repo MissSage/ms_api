@@ -70,10 +70,10 @@ export const detail = async (
   next: NextFunction,
 ) => {
   try {
-    const db = new MovieTags()
-    const data = await db.detail(req.params.id)
+    const db = new MovieTags();
+    const data = await db.detail(req.params.id);
     res.status(200).send({
-      data: data
+      data: data,
     });
   } catch (error) {
     next(error);
@@ -85,10 +85,10 @@ export const patch = async (
   next: NextFunction,
 ) => {
   try {
-    const db = new MovieTags()
-    const rows = await db.patch(req)
+    const db = new MovieTags();
+    const rows = await db.patch(req);
     res.status(200).send({
-      data: rows
+      data: rows,
     });
   } catch (error) {
     next(error);

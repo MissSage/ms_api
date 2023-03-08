@@ -76,24 +76,27 @@ export const patch = async (
   }
 };
 
-export const toggle = async (req: Request, res: Response, next: NextFunction) => {
+export const toggle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     if (!req.body.movieId) {
-      next(new Error('未传入movieId'))
+      next(new Error('未传入movieId'));
     } else {
-      const db = new Favorite()
-      const rows = await db.get(req.body)
+      const db = new Favorite();
+      const rows = await db.get(req.body);
       if (!rows.data.length) {
-        await db.post(req.body)
+        await db.post(req.body);
       } else {
-        await db.del(rows.data.map(item => item._id.toString()))
+        await db.del(rows.data.map((item) => item._id.toString()));
       }
       res.status(200).send({
-        message: rows.data.length ? '已取消' : '收藏成功'
-      })
+        message: rows.data.length ? '已取消' : '收藏成功',
+      });
     }
-
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};

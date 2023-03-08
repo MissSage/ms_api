@@ -1,4 +1,4 @@
 import { Base } from '../mysql';
-export declare class MovieTags extends Base {
+export declare class Favorite extends Base {
     constructor();
 }

@@ -140,9 +140,9 @@ export const Import = async (
         directs: item.directs || [],
         createTime: new Date().valueOf(),
       };
-      return row
+      return row;
     });
-    const result = await db.addMany(rows)
+    const result = await db.addMany(rows);
     res.status(200).json({
       data: result,
     });
@@ -192,18 +192,17 @@ export const favours = async (
   next: NextFunction,
 ) => {
   try {
-    const favourDB = new Favorite()
-    const favours = await favourDB.get()
-    const db = new Movie()
-    const ids = favours.data.map(item => item.movieId)
-    const result = await db.findByIds(ids)
+    const favourDB = new Favorite();
+    const favours = await favourDB.get();
+    const db = new Movie();
+    const ids = favours.data.map((item) => item.movieId);
+    const result = await db.findByIds(ids);
     res.status(200).send({
       data: result,
       total: result.length,
-      message: '操作成功'
-    })
+      message: '操作成功',
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-
-}
+};

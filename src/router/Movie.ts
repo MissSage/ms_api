@@ -10,5 +10,5 @@ router.post('/movie', Movie.post);
 router.patch('/movie', Movie.patch);
 router.post('/movie/import', Movie.Import);
 router.post('/movie/imgs/:id', Movie.postImage);
-router.get('/movies/favour',Movie.favours)
+router.get('/movies/favour', Movie.favours);
 export default router;

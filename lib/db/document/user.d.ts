@@ -1,4 +1,4 @@
-import { Base } from '../../utils/mysql';
+import { Base } from '../mysql';
 export declare class User extends Base {
     constructor();
     testProp: () => string;

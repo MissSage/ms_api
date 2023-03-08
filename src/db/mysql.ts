@@ -1,4 +1,10 @@
-import { Session, DocumentOrJSON, getSession, Collection, CollectionAdd } from '@mysql/xdevapi';
+import {
+  Session,
+  DocumentOrJSON,
+  getSession,
+  Collection,
+  CollectionAdd,
+} from '@mysql/xdevapi';
 import { Options } from '@mysql/xdevapi/types/lib/DevAPI/Connection';
 import { Request } from 'express';
 export class Base {
@@ -27,21 +33,19 @@ export class Base {
    */
   async _getCollection(): Promise<Collection | undefined> {
     try {
-
       this.session = await getSession(this.collectionProperties);
       return this.session
         .getSchema(this.schema)
         .createCollection(this.collectionName, { reuseExisting: true });
     } catch (error) {
-      throw new Error(error)
+      throw new Error(error);
     }
-
   }
   async _dispose(): Promise<void> {
     try {
-      await this.session.close()
+      await this.session.close();
     } catch (error) {
-      throw new Error(error)
+      throw new Error(error);
     }
   }
   /**
@@ -101,7 +105,7 @@ export class Base {
 
     const exed = await find.execute();
     const data = await exed.fetchAll();
-    await this._dispose()
+    await this._dispose();
     return {
       data: data || [],
       total: count || 0,
@@ -109,38 +113,38 @@ export class Base {
   }
   /**
    * 详情
-   * @param _id 
-   * @returns 
+   * @param _id
+   * @returns
    */
   async detail(_id: string) {
     const collection = await this._getCollection();
-    const find = await collection.find('_id = :_id').bind('_id', _id).execute()
+    const find = await collection.find('_id = :_id').bind('_id', _id).execute();
     const res = await find.fetchOne();
-    await this._dispose()
+    await this._dispose();
     return res;
   }
   async findByIds(ids: any[]) {
     const collection = await this._getCollection();
-    const find = collection.find('_id = :id')
+    const find = collection.find('_id = :id');
     const proS: any[] = [];
     ids.map((item) => {
       proS.push(find.bind('id', item).execute());
     });
     let res = await Promise.all(proS);
-    res = res.map(item=>item.fetchOne())
-    await this._dispose()
+    res = res.map((item) => item.fetchOne());
+    await this._dispose();
     return res;
   }
   /**
    * 新增
-   * @param params 
-   * @returns 
+   * @param params
+   * @returns
    */
   async post(params: DocumentOrJSON) {
     params['createTime'] = new Date().valueOf();
     const collection = await this._getCollection();
     const res = await collection.add(params).execute();
-    await this._dispose()
+    await this._dispose();
     return res;
   }
   async put(id: string, params: DocumentOrJSON) {
@@ -150,7 +154,7 @@ export class Base {
       .patch({ ...(params as object), updateTime: new Date().valueOf() })
       .bind('id', id)
       .execute();
-    await this._dispose()
+    await this._dispose();
     return res;
   }
   async patch(req: Request) {
@@ -164,27 +168,27 @@ export class Base {
       proS.push(modi.bind('id', item).execute());
     });
     const res = await Promise.all(proS);
-    await this._dispose()
+    await this._dispose();
     return res;
   }
   /**
    * 一次添加多个
-   * @param rows 
-   * @returns 
+   * @param rows
+   * @returns
    */
   async addMany(rows: any[]) {
     const collection = await this._getCollection();
     let add: CollectionAdd = undefined;
-    rows.map(row => {
+    rows.map((row) => {
       if (add) {
         add = add.add(row);
       } else {
         add = collection.add(row);
       }
-    })
-    const result = await add?.execute()
-    await this._dispose()
-    return result
+    });
+    const result = await add?.execute();
+    await this._dispose();
+    return result;
   }
   async del(ids: string[]) {
     const collection = await this._getCollection();
@@ -194,7 +198,7 @@ export class Base {
       proS.push(remove.bind('id', item).execute());
     });
     const res = await Promise.all(proS);
-    await this._dispose()
+    await this._dispose();
     return res;
   }
 }
