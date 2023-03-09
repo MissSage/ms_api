@@ -1,15 +1,25 @@
-import { {{apiName}} } from '../db';
+import { MoviePlatforms } from '../db';
 import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new {{apiName}}();
-    const row = await db.post(req.body);
-    const ids = row.getGeneratedIds();
-    const result = await db.detail(ids?.[0]);
-    res.status(201).json({
-      message: '操作成功',
-      data: result,
-    });
+    const db = new MoviePlatforms();
+    const platforms = req.body.platforms;
+    if (platforms?.length) {
+      const collection = await db._getCollection();
+      const pS = [];
+      platforms.map((item) => {
+        pS.push(
+          collection
+            .add({
+              name: item,
+              createTime: new Date().valueOf(),
+            })
+            .execute(),
+        );
+      });
+      await Promise.all(pS);
+      res.status(201).json({});
+    }
   } catch (error) {
     next(error);
   }
@@ -23,7 +33,7 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
         data: null,
       });
     } else {
-      const db = new {{apiName}}();
+      const db = new MoviePlatforms();
       const row = await db.put(req.params.id, req.body);
       res.status(200).json({
         data: row,
@@ -36,7 +46,7 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const del = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new {{apiName}}();
+    const db = new MoviePlatforms();
     await db.del(req.body.ids);
     res.status(200).json({
       message: '操作成功'
@@ -47,7 +57,7 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new {{apiName}}();
+    const db = new MoviePlatforms();
     const rows = await db.get(req.query);
     res.status(200).json({
       ...(rows||{}),
@@ -63,7 +73,7 @@ export const detail = async (
   next: NextFunction,
 ) => {
   try {
-    const db = new {{apiName}}();
+    const db = new MoviePlatforms();
     const row = await db.detail(req.params.id as string);
     res.status(200).json({
       data: row,
@@ -79,7 +89,7 @@ export const patch = async (
   next: NextFunction,
 ) => {
   try {
-    const db = await new {{apiName}}();
+    const db = await new MoviePlatforms();
     await db.patch(req);
     res.status(200).send({
       message: '操作成功'

@@ -51,7 +51,14 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
     if (req.query.direct) {
       findStr = "'" + req.query.direct + "' in directs[*]";
     }
+    if (req.query.type) {
+      findStr = " '" + req.query.type + "' in types[*] ";
+    }
+    if(req.query.platform){
+      findStr = " '" + req.query.type + "' in platforms[*] ";
+    }
     delete req.query['direct'];
+    delete req.query['type'];
     const rows = await db.get(req.query, findStr);
     res.status(200).json(rows);
   } catch (error) {

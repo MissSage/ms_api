@@ -26,5 +26,19 @@
     "apiZHName": "喜欢",
     "apiDesc": "收藏喜欢的资源",
     "collectionName": "favorite"
+  },
+  {
+    "databaseName": "movietypes",
+    "apiName": "MovieTypes",
+    "apiZHName": "电影分类",
+    "apiDesc": "默认：这是一个新控制器",
+    "collectionName": "movietypes"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "MoviePlatforms",
+    "apiZHName": "电影平台",
+    "apiDesc": "默认：这是一个新控制器",
+    "collectionName": "movieplatforms"
   }
 ]
