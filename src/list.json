@@ -40,5 +40,12 @@
     "apiZHName": "电影平台",
     "apiDesc": "默认：这是一个新控制器",
     "collectionName": "movieplatforms"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "Music",
+    "apiZHName": "音乐",
+    "apiDesc": "默认：这是一个新控制器",
+    "collectionName": "music"
   }
 ]

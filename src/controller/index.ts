@@ -1,6 +1,6 @@
-/**
+/** 
  * !--------- WARNING ----------!
- *
+ * 
  * 自动生成，请勿手动修改
  */
 
@@ -15,3 +15,5 @@ export * as Favorite from './Favorite';
 export * as MovieTypes from './MovieTypes';
 
 export * as MoviePlatforms from './MoviePlatforms';
+
+export * as Music from './Music';

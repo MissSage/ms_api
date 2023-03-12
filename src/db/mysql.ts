@@ -97,11 +97,10 @@ export class Base {
       find = find.sort(sortStr);
     }
     const count = (await find.execute()).fetchAll().length;
-    if (query.page && query.size) {
-      const size = Number(query.size);
-      const page = Number(query.page);
-      find = find.limit(size).offset((page - 1) * size);
-    }
+    const size = Number(query.size || 20);
+    const page = Number(query.page || 1);
+    find = find.limit(size).offset((page - 1) * size);
+
 
     const exed = await find.execute();
     const data = await exed.fetchAll();
