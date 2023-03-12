@@ -1,10 +1,9 @@
-/** 
+/**
  * !--------- WARNING ----------!
- * 
+ *
  * 自动生成，请勿手动修改
  */
 import express = require('express');
-
 
 import User from './User';
 
@@ -18,9 +17,7 @@ import MovieTypes from './MovieTypes';
 
 import MoviePlatforms from './MoviePlatforms';
 
-
-const router:express.Router = express.Router();
-
+const router: express.Router = express.Router();
 
 router.use(User);
 router.use(Movie);

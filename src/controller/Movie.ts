@@ -54,7 +54,7 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
     if (req.query.type) {
       findStr = " '" + req.query.type + "' in types[*] ";
     }
-    if(req.query.platform){
+    if (req.query.platform) {
       findStr = " '" + req.query.type + "' in platforms[*] ";
     }
     delete req.query['direct'];

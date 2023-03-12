@@ -1,7 +1,7 @@
 import express = require('express');
 import { MovieTypes } from '../controller';
 
-const router:express.Router = express.Router();
+const router: express.Router = express.Router();
 // 详情
 router.get('/movietypes/:id', MovieTypes.detail);
 // 列表

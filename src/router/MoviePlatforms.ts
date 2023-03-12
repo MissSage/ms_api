@@ -1,7 +1,7 @@
 import express = require('express');
 import { MoviePlatforms } from '../controller';
 
-const router:express.Router = express.Router();
+const router: express.Router = express.Router();
 // 详情
 router.get('/movieplatforms/:id', MoviePlatforms.detail);
 // 列表

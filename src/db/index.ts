@@ -1,6 +1,6 @@
-/** 
+/**
  * !--------- WARNING ----------!
- * 
+ *
  * 自动生成，请勿手动修改
  */
 
@@ -16,4 +16,4 @@ export { MovieTypes } from './document/MovieTypes';
 
 export { MoviePlatforms } from './document/MoviePlatforms';
 
-export * from './mysql'
+export * from './mysql';
