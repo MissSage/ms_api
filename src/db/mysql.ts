@@ -101,7 +101,6 @@ export class Base {
     const page = Number(query.page || 1);
     find = find.limit(size).offset((page - 1) * size);
 
-
     const exed = await find.execute();
     const data = await exed.fetchAll();
     await this._dispose();

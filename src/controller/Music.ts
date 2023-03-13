@@ -108,9 +108,7 @@ export const Import = async (
     const inputPath = req.body.path as string;
     if (!inputPath) next(new Error('path值无效'));
     let rootPath = resolve(decodeURIComponent(inputPath)).replace(/\\/g, '/');
-    let files = await genetaPaths([
-      'mp3'
-    ]).readFile(rootPath, []);
+    let files = await genetaPaths(['mp3']).readFile(rootPath, []);
     if (req.body.replacePath) {
       let replaceStr = decodeURIComponent(req.body.replacePath).replace(
         /\\/g,

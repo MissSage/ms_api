@@ -16,7 +16,7 @@
     "build:comment": "构建",
     "build": "npm run eslint && npm run prettier && tsc --build",
     "preview:comment": "使用nodemon启动预览服务",
-    "preview": "pm2 。/lib/index.js --watch",
+    "preview": "pm2 start ./lib/index.js --watch",
     "gen:comment": "执行gen命令来自动生成控制器和数据库连接，并自动注册接口",
     "gen": "node ./script/genNewComp/index.js",
     "clear:comment": "执行clear命令来清除所有业务相关",

@@ -47,5 +47,12 @@
     "apiZHName": "音乐",
     "apiDesc": "默认：这是一个新控制器",
     "collectionName": "music"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "MovieStarrings",
+    "apiZHName": "电影主演",
+    "apiDesc": "默认：这是一个新控制器",
+    "collectionName": "moviestarrings"
   }
 ]

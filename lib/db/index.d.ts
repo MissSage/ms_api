@@ -9,4 +9,6 @@ export { MovieTags } from './document/MovieTags';
 export { Favorite } from './document/Favorite';
 export { MovieTypes } from './document/MovieTypes';
 export { MoviePlatforms } from './document/MoviePlatforms';
+export { Music } from './document/Music';
+export { MovieStarrings } from './document/MovieStarrings';
 export * from './mysql';
