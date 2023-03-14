@@ -51,6 +51,9 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
     if (req.query.direct) {
       findStr = "'" + req.query.direct + "' in directs[*]";
     }
+    if (req.query.starring) {
+      findStr = "'" + req.query.starring + "' in starrings[*]";
+    }
     if (req.query.type) {
       findStr = " '" + req.query.type + "' in types[*] ";
     }
