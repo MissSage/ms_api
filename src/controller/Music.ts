@@ -1,4 +1,4 @@
-import { Music, Favorite } from '../db';
+import { Music, MovieFavorite } from '../db';
 import { Request, Response, NextFunction } from 'express';
 import { base64ToImage, genetaPaths } from '../utils/fileHelper';
 import { resolve } from 'path';
@@ -191,7 +191,7 @@ export const favours = async (
   next: NextFunction,
 ) => {
   try {
-    const favourDB = new Favorite();
+    const favourDB = new MovieFavorite();
     const favours = await favourDB.get();
     const db = new Music();
     const ids = favours.data.map((item) => item.MusicId);

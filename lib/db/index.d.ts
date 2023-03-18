@@ -6,9 +6,9 @@
 export { User } from './document/User';
 export { Movie } from './document/Movie';
 export { MovieTags } from './document/MovieTags';
-export { Favorite } from './document/Favorite';
+export { MovieFavorite } from './document/MovieFavorite';
 export { MovieTypes } from './document/MovieTypes';
 export { MoviePlatforms } from './document/MoviePlatforms';
-export { Music } from './document/Music';
 export { MovieStarrings } from './document/MovieStarrings';
+export { Music } from './document/Music';
 export * from './mysql';
