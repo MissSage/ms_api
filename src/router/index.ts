@@ -11,7 +11,7 @@ import Movie from './Movie';
 
 import MovieTags from './MovieTags';
 
-import Favorite from './Favorite';
+import MovieFavorite from './MovieFavorite';
 
 import MovieTypes from './MovieTypes';
 
@@ -26,7 +26,7 @@ const router: express.Router = express.Router();
 router.use(User);
 router.use(Movie);
 router.use(MovieTags);
-router.use(Favorite);
+router.use(MovieFavorite);
 router.use(MovieTypes);
 router.use(MoviePlatforms);
 router.use(Music);

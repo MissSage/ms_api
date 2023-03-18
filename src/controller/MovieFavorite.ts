@@ -1,8 +1,8 @@
-import { Favorite } from '../db';
+import { MovieFavorite } from '../db';
 import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new Favorite();
+    const db = new MovieFavorite();
     const row = await db.post(req.body);
     const ids = row.getGeneratedIds();
     const result = await db.detail(ids?.[0]);
@@ -22,7 +22,7 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
         data: null,
       });
     } else {
-      const db = new Favorite();
+      const db = new MovieFavorite();
       const row = await db.put(req.params.id, req.body);
       res.status(200).json({
         data: row,
@@ -35,7 +35,7 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const del = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new Favorite();
+    const db = new MovieFavorite();
     await db.del(req.body.ids);
     res.status(200).json({
       data: req.params.id,
@@ -46,7 +46,7 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new Favorite();
+    const db = new MovieFavorite();
     const rows = await db.get(req.query);
     res.status(200).json(rows);
   } catch (error) {
@@ -85,7 +85,7 @@ export const toggle = async (
     if (!req.body.movieId) {
       next(new Error('未传入movieId'));
     } else {
-      const db = new Favorite();
+      const db = new MovieFavorite();
       const rows = await db.get(req.body);
       if (!rows.data.length) {
         await db.post(req.body);

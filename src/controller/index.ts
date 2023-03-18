@@ -10,7 +10,7 @@ export * as Movie from './Movie';
 
 export * as MovieTags from './MovieTags';
 
-export * as Favorite from './Favorite';
+export * as MovieFavorite from './MovieFavorite';
 
 export * as MovieTypes from './MovieTypes';
 
