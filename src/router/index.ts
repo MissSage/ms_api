@@ -21,6 +21,8 @@ import Music from './Music';
 
 import MovieStarrings from './MovieStarrings';
 
+import MusicFavorite from './MusicFavorite';
+
 const router: express.Router = express.Router();
 
 router.use(User);
@@ -31,5 +33,6 @@ router.use(MovieTypes);
 router.use(MoviePlatforms);
 router.use(Music);
 router.use(MovieStarrings);
+router.use(MusicFavorite);
 
 export default router;

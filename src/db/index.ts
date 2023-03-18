@@ -16,8 +16,10 @@ export { MovieTypes } from './document/MovieTypes';
 
 export { MoviePlatforms } from './document/MoviePlatforms';
 
+export { Music } from './document/Music';
+
 export { MovieStarrings } from './document/MovieStarrings';
 
-export { Music } from './document/Music';
+export { MusicFavorite } from './document/MusicFavorite';
 
 export * from './mysql';

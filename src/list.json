@@ -22,7 +22,7 @@
   },
   {
     "databaseName": "ms",
-    "apiName": "Favorite",
+    "apiName": "MovieFavorite",
     "apiZHName": "喜欢",
     "apiDesc": "收藏喜欢的资源",
     "collectionName": "favorite"
@@ -43,6 +43,13 @@
   },
   {
     "databaseName": "ms",
+    "apiName": "MovieStarrings",
+    "apiZHName": "电影主演",
+    "apiDesc": "默认：这是一个新控制器",
+    "collectionName": "moviestarrings"
+  },
+  {
+    "databaseName": "ms",
     "apiName": "Music",
     "apiZHName": "音乐",
     "apiDesc": "默认：这是一个新控制器",
@@ -50,9 +57,9 @@
   },
   {
     "databaseName": "ms",
-    "apiName": "MovieStarrings",
-    "apiZHName": "电影主演",
+    "apiName": "MusicFavorite",
+    "apiZHName": "音乐收藏",
     "apiDesc": "默认：这是一个新控制器",
-    "collectionName": "moviestarrings"
+    "collectionName": "musicfavorite"
   }
 ]
