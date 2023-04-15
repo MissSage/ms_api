@@ -9,6 +9,7 @@ export * as MovieTags from './MovieTags';
 export * as MovieFavorite from './MovieFavorite';
 export * as MovieTypes from './MovieTypes';
 export * as MoviePlatforms from './MoviePlatforms';
-export * as Music from './Music';
 export * as MovieStarrings from './MovieStarrings';
+export * as Music from './Music';
 export * as MusicFavorite from './MusicFavorite';
+export * as Image from './Image';

@@ -17,11 +17,13 @@ import MovieTypes from './MovieTypes';
 
 import MoviePlatforms from './MoviePlatforms';
 
-import Music from './Music';
-
 import MovieStarrings from './MovieStarrings';
 
+import Music from './Music';
+
 import MusicFavorite from './MusicFavorite';
+
+import Image from './Image';
 
 const router: express.Router = express.Router();
 
@@ -31,8 +33,9 @@ router.use(MovieTags);
 router.use(MovieFavorite);
 router.use(MovieTypes);
 router.use(MoviePlatforms);
-router.use(Music);
 router.use(MovieStarrings);
+router.use(Music);
 router.use(MusicFavorite);
+router.use(Image);
 
 export default router;

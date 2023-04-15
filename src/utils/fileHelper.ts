@@ -10,7 +10,7 @@ export const genetaPaths = (exts?: string[]) => {
     if (entry.isFile()) {
       const splited = entry.name.split('.');
       const ext = splited[splited.length - 1];
-      if (ext && exts.indexOf(ext) !== -1) {
+      if (ext && exts.indexOf(ext.toLowerCase()) !== -1) {
         outFilePaths.push({ path, name, directs });
       }
     } else if (entry.isDirectory()) {
