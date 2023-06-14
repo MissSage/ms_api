@@ -68,5 +68,12 @@
     "apiZHName": "图片",
     "apiDesc": "默认：这是一个新控制器",
     "collectionName": "image"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "MovieDirects",
+    "apiZHName": "电影目录",
+    "apiDesc": "默认：这是一个新控制器",
+    "collectionName": "moviedirects"
   }
 ]

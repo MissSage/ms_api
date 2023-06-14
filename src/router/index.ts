@@ -1,9 +1,10 @@
-/**
+/** 
  * !--------- WARNING ----------!
- *
+ * 
  * 自动生成，请勿手动修改
  */
 import express = require('express');
+
 
 import User from './User';
 
@@ -25,7 +26,11 @@ import MusicFavorite from './MusicFavorite';
 
 import Image from './Image';
 
-const router: express.Router = express.Router();
+import MovieDirects from './MovieDirects';
+
+
+const router:express.Router = express.Router();
+
 
 router.use(User);
 router.use(Movie);
@@ -37,5 +42,6 @@ router.use(MovieStarrings);
 router.use(Music);
 router.use(MusicFavorite);
 router.use(Image);
+router.use(MovieDirects);
 
 export default router;

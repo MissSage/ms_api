@@ -14,5 +14,6 @@ router.delete('/{{collectionName}}', {{apiName}}.del);
 router.post('/{{collectionName}}', {{apiName}}.post);
 // 批量修改
 router.patch('/{{collectionName}}', {{apiName}}.patch);
-
+// 批量添加
+router.post('/{{collectionName}}/addmany', {{apiName}}.addMany);
 export default router;

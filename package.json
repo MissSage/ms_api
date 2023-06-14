@@ -19,7 +19,7 @@
     "preview": "pm2 start ./lib/index.js --watch",
     "gen:comment": "执行gen命令来自动生成控制器和数据库连接，并自动注册接口",
     "gen": "node ./script/genNewComp/index.js",
-    "clear:comment": "执行clear命令来清除所有业务相关",
+    "clear:comment": "执行clear命令来清除所有业务相关,只在创建新项目模板的时候用，项目一但开始则不应该再使用",
     "clear": "node ./script/genNewComp/clear.js"
   },
   "keywords": [],

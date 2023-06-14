@@ -97,9 +97,11 @@ export class Base {
       find = find.sort(sortStr);
     }
     const count = (await find.execute()).fetchAll().length;
-    const size = Number(query.size || 20);
-    const page = Number(query.page || 1);
-    find = find.limit(size).offset((page - 1) * size);
+    if (query.size) {
+      const size = Number(query.size || 20);
+      const page = Number(query.page || 1);
+      find = find.limit(size).offset((page - 1) * size);
+    }
 
     const exed = await find.execute();
     const data = await exed.fetchAll();
@@ -178,6 +180,7 @@ export class Base {
     const collection = await this._getCollection();
     let add: CollectionAdd = undefined;
     rows.map((row) => {
+      row['createTime'] = new Date().valueOf();
       if (add) {
         add = add.add(row);
       } else {

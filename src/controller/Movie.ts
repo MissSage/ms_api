@@ -1,4 +1,4 @@
-import { Movie, MovieFavorite } from '../db';
+import { Movie, MovieFavorite, MovieDirects } from '../db';
 import { Request, Response, NextFunction } from 'express';
 import { base64ToImage, genetaPaths } from '../utils/fileHelper';
 import { resolve } from 'path';
@@ -140,6 +140,7 @@ export const Import = async (
       });
     }
     const db = new Movie();
+    let directs: any[] = [];
     const rows = files.map((item) => {
       const row = {
         title: item.name,
@@ -150,9 +151,18 @@ export const Import = async (
         directs: item.directs || [],
         createTime: new Date().valueOf(),
       };
+      const cDirects = item.directs.slice(0, item.directs.length - 1)
+      directs = directs.concat(...cDirects);
       return row;
     });
+    directs = [...new Set(directs)].map(item=>{
+      return {
+        path: item
+      }
+    });
     const result = await db.addMany(rows);
+    const directDb = new MovieDirects();
+    await directDb.addMany(directs);
     res.status(200).json({
       data: result,
     });

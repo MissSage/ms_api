@@ -1,6 +1,6 @@
-/**
+/** 
  * !--------- WARNING ----------!
- *
+ * 
  * 自动生成，请勿手动修改
  */
 
@@ -24,4 +24,6 @@ export { MusicFavorite } from './document/MusicFavorite';
 
 export { Image } from './document/Image';
 
-export * from './mysql';
+export { MovieDirects } from './document/MovieDirects';
+
+export * from './mysql'

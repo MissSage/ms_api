@@ -1,8 +1,8 @@
-import { {{apiName}} } from '../db';
+import { MovieDirects } from '../db';
 import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new {{apiName}}();
+    const db = new MovieDirects();
     const row = await db.post(req.body);
     const ids = row.getGeneratedIds();
     const result = await db.detail(ids?.[0]);
@@ -23,7 +23,7 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
         data: null,
       });
     } else {
-      const db = new {{apiName}}();
+      const db = new MovieDirects();
       const row = await db.put(req.params.id, req.body);
       res.status(200).json({
         data: row,
@@ -36,7 +36,7 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const del = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new {{apiName}}();
+    const db = new MovieDirects();
     await db.del(req.body.ids);
     res.status(200).json({
       message: '操作成功'
@@ -47,7 +47,7 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new {{apiName}}();
+    const db = new MovieDirects();
     const rows = await db.get(req.query);
     res.status(200).json({
       ...(rows||{}),
@@ -63,7 +63,7 @@ export const detail = async (
   next: NextFunction,
 ) => {
   try {
-    const db = new {{apiName}}();
+    const db = new MovieDirects();
     const row = await db.detail(req.params.id as string);
     res.status(200).json({
       data: row,
@@ -79,7 +79,7 @@ export const patch = async (
   next: NextFunction,
 ) => {
   try {
-    const db = await new {{apiName}}();
+    const db = await new MovieDirects();
     await db.patch(req);
     res.status(200).send({
       message: '操作成功'
