@@ -151,14 +151,14 @@ export const Import = async (
         directs: item.directs || [],
         createTime: new Date().valueOf(),
       };
-      const cDirects = item.directs.slice(0, item.directs.length - 1)
+      const cDirects = item.directs.slice(0, item.directs.length - 1);
       directs = directs.concat(...cDirects);
       return row;
     });
-    directs = [...new Set(directs)].map(item=>{
+    directs = [...new Set(directs)].map((item) => {
       return {
-        path: item
-      }
+        path: item,
+      };
     });
     const result = await db.addMany(rows);
     const directDb = new MovieDirects();

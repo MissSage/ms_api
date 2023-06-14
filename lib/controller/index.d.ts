@@ -13,3 +13,4 @@ export * as MovieStarrings from './MovieStarrings';
 export * as Music from './Music';
 export * as MusicFavorite from './MusicFavorite';
 export * as Image from './Image';
+export * as MovieDirects from './MovieDirects';

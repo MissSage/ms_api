@@ -13,4 +13,5 @@ export { MovieStarrings } from './document/MovieStarrings';
 export { Music } from './document/Music';
 export { MusicFavorite } from './document/MusicFavorite';
 export { Image } from './document/Image';
+export { MovieDirects } from './document/MovieDirects';
 export * from './mysql';
