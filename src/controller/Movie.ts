@@ -108,10 +108,7 @@ export const Import = async (
   next: NextFunction,
 ) => {
   try {
-    const inputPath = req.body.path as string;
-    if (!inputPath) next(new Error('path值无效'));
-    let rootPath = resolve(decodeURIComponent(inputPath)).replace(/\\/g, '/');
-    let files = await genetaPaths([
+    const fileTypes = req.body.types || [
       'mp4',
       'MP4',
       'avi',
@@ -119,7 +116,11 @@ export const Import = async (
       'mkv',
       'wmv',
       'mov',
-    ]).readFile(rootPath, []);
+    ];
+    const inputPath = req.body.path as string;
+    if (!inputPath) next(new Error('path值无效'));
+    let rootPath = resolve(decodeURIComponent(inputPath)).replace(/\\/g, '/');
+    let files = await genetaPaths(fileTypes).readFile(rootPath, []);
     if (req.body.replacePath) {
       let replaceStr = decodeURIComponent(req.body.replacePath).replace(
         /\\/g,
