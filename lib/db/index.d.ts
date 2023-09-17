@@ -14,4 +14,7 @@ export { Music } from './document/Music';
 export { MusicFavorite } from './document/MusicFavorite';
 export { Image } from './document/Image';
 export { MovieDirects } from './document/MovieDirects';
+export { Role } from './document/Role';
+export { Source } from './document/Source';
+export { Route } from './document/Route';
 export * from './mysql';

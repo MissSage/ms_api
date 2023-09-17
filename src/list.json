@@ -75,5 +75,47 @@
     "apiZHName": "电影目录",
     "apiDesc": "默认：这是一个新控制器",
     "collectionName": "moviedirects"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "Role",
+    "apiZHName": "角色",
+    "apiDesc": "用户角色",
+    "collectionName": "role"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "RoleBtns",
+    "apiZHName": "角色按钮权限",
+    "apiDesc": "角色按钮权限",
+    "collectionName": "rolebtns"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "RoleMenus",
+    "apiZHName": "角色菜单权限",
+    "apiDesc": "角色菜单权限",
+    "collectionName": "rolemenus"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "Menu",
+    "apiZHName": "菜单",
+    "apiDesc": "菜单",
+    "collectionName": "menu"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "Source",
+    "apiZHName": "资源",
+    "apiDesc": "所有页面的路径管理",
+    "collectionName": "source"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "Route",
+    "apiZHName": "异步路由",
+    "apiDesc": "前端页面的异步路由管理",
+    "collectionName": "route"
   }
 ]

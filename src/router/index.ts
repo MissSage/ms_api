@@ -1,9 +1,10 @@
-/**
+/** 
  * !--------- WARNING ----------!
- *
+ * 
  * 自动生成，请勿手动修改
  */
 import express = require('express');
+
 
 import User from './User';
 
@@ -27,7 +28,17 @@ import Image from './Image';
 
 import MovieDirects from './MovieDirects';
 
-const router: express.Router = express.Router();
+import Role from './Role';
+
+import Source from './Source';
+
+import Route from './Route';
+
+import User from './User';
+
+
+const router:express.Router = express.Router();
+
 
 router.use(User);
 router.use(Movie);
@@ -40,5 +51,9 @@ router.use(Music);
 router.use(MusicFavorite);
 router.use(Image);
 router.use(MovieDirects);
+router.use(Role);
+router.use(Source);
+router.use(Route);
+router.use(User);
 
 export default router;

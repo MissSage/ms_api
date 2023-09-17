@@ -1,12 +1,13 @@
-import { User } from '../db';
+import { Menu } from '../db';
 import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new User();
+    const db = new Menu();
     const row = await db.post(req.body);
     const ids = row.getGeneratedIds();
     const result = await db.detail(ids?.[0]);
     res.status(201).json({
+      message: '操作成功',
       data: result,
     });
   } catch (error) {
@@ -22,11 +23,11 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
         data: null,
       });
     } else {
-      const db = new User();
+      const db = new Menu();
       const row = await db.put(req.params.id, req.body);
       res.status(200).json({
         data: row,
-        message: '修改成功',
+        message: '操作成功',
       });
     }
   } catch (error) {
@@ -35,10 +36,10 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const del = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new User();
+    const db = new Menu();
     await db.del(req.body.ids);
     res.status(200).json({
-      data: req.params.id,
+      message: '操作成功'
     });
   } catch (error) {
     next(error);
@@ -46,9 +47,12 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
 };
 export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const db = new User();
+    const db = new Menu();
     const rows = await db.get(req.query);
-    res.status(200).json(rows);
+    res.status(200).json({
+      ...(rows||{}),
+      message: '操作成功'
+    });
   } catch (error) {
     next(error);
   }
@@ -59,7 +63,12 @@ export const detail = async (
   next: NextFunction,
 ) => {
   try {
-    res.send('detail');
+    const db = new Menu();
+    const row = await db.detail(req.params.id as string);
+    res.status(200).json({
+      data: row,
+      message: '操作成功'
+    });
   } catch (error) {
     next(error);
   }
@@ -70,8 +79,25 @@ export const patch = async (
   next: NextFunction,
 ) => {
   try {
-    res.send('patch');
+    const db = await new Menu();
+    await db.patch(req);
+    res.status(200).send({
+      message: '操作成功'
+    });
   } catch (error) {
     next(error);
   }
 };
+
+export const addMany = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const db = await new Menu();
+    const result = await db.addMany(req.body)
+    res.status(201).send({
+      message: '操作成功',
+      data: result
+    })
+  } catch (error) {
+    next(error)
+  }
+}

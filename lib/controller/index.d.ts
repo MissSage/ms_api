@@ -14,3 +14,6 @@ export * as Music from './Music';
 export * as MusicFavorite from './MusicFavorite';
 export * as Image from './Image';
 export * as MovieDirects from './MovieDirects';
+export * as Role from './Role';
+export * as Source from './Source';
+export * as Route from './Route';

@@ -1,11 +1,11 @@
 import { Base } from '../mysql';
 
-export class User extends Base {
+export class Source extends Base {
   constructor() {
     super({
       schema: 'ms',
-      collection: 'user',
+      collection: 'source',
     });
   }
-  testProp: () => string;
+  // 这里写特有逻辑方法
 }

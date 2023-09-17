@@ -16,6 +16,10 @@ const getTplFilePath = (meta) => ({
   router: {
     from: './.template/router/router.ts.tpl',
     to: `../../src/router/${meta.apiName}.ts`
+  },
+  docs: {
+    from: './.template/apiDocs/api/api.md.tpl',
+    to: `../../docs/api/${meta.apiName}.md`
   }
 })
 
@@ -97,6 +101,23 @@ const dbTplReplacer = (listFileContent) => {
     if (err) console.log(err)
   })
 }
+// 更新 docs/.vitepress/sidebar/index.ts
+const sidebarTplReplacer = (listFileContent) => {
+  const docFileFrom = './.template/apiDocs/config/sidebar/index.ts.tpl'
+  const docFileTo = '../../docs/.vitepress/sidebar/index.ts'
+  const docFileTpl = fs.readFileSync(resolve(__dirname, docFileFrom), 'utf-8')
+  let docRoutes = ''
+  listFileContent.map(comp => {
+    docRoutes+=`\n{ text: '${comp.apiName}', link: '/api/${comp.apiName}' },\n`
+  })
+  const docMeta = {
+    docRoutes
+  }
+  const docFileContent = handlebars.compile(docFileTpl, { noEscape: true })(docMeta)
+  fs.outputFile(resolve(__dirname, docFileTo), docFileContent, err => {
+    if (err) console.log(err)
+  })
+}
 
 // 更新 install.ts
 // const installTsTplReplacer = (listFileContent) => {
@@ -120,6 +141,7 @@ module.exports = (meta) => {
   routerTplReplacer(listFileContent)
   dbTplReplacer(listFileContent)
   controllerTplReplacer(listFileContent)
+  sidebarTplReplacer(listFileContent)
 
-  console.log(`组件新建完毕，请前往 packages/${meta.apiName} 目录进行开发`);
+  console.log(`接口新建完毕，接口相关文件名以${meta.apiName}开头，如果生成的接口不能满足生产需要，请前往 src/controller/${meta.apiName}.ts 进行接口调整`);
 }

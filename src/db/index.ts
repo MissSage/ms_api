@@ -1,6 +1,6 @@
-/**
+/** 
  * !--------- WARNING ----------!
- *
+ * 
  * 自动生成，请勿手动修改
  */
 
@@ -26,4 +26,12 @@ export { Image } from './document/Image';
 
 export { MovieDirects } from './document/MovieDirects';
 
-export * from './mysql';
+export { Role } from './document/Role';
+
+export { Source } from './document/Source';
+
+export { Route } from './document/Route';
+
+export { User } from './document/User';
+
+export * from './mysql'
