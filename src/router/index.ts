@@ -5,6 +5,8 @@
  */
 import express = require('express');
 
+import User from './User';
+import Movie from './Movie';
 import MovieTags from './MovieTags';
 import MovieFavorite from './MovieFavorite';
 import MovieTypes from './MovieTypes';
@@ -20,12 +22,10 @@ import RoleMenus from './RoleMenus';
 import Menu from './Menu';
 import Source from './Source';
 import Route from './Route';
-import User from './User';
-import Movie from './Movie';
 
 
-const router:express.Router = express.Router();
+const router: express.Router = express.Router();
 
-router.use(MovieTags);router.use(MovieFavorite);router.use(MovieTypes);router.use(MoviePlatforms);router.use(MovieStarrings);router.use(Music);router.use(MusicFavorite);router.use(Image);router.use(MovieDirects);router.use(Role);router.use(RoleBtns);router.use(RoleMenus);router.use(Menu);router.use(Source);router.use(Route);router.use(User);router.use(Movie);
+router.use(User);router.use(Movie);router.use(MovieTags);router.use(MovieFavorite);router.use(MovieTypes);router.use(MoviePlatforms);router.use(MovieStarrings);router.use(Music);router.use(MusicFavorite);router.use(Image);router.use(MovieDirects);router.use(Role);router.use(RoleBtns);router.use(RoleMenus);router.use(Menu);router.use(Source);router.use(Route);
 
 export default router;

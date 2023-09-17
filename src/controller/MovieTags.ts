@@ -3,23 +3,13 @@ import { Request, Response, NextFunction } from 'express';
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new MovieTags();
-    const tags = req.body.tags;
-    if (tags?.length) {
-      const collection = await db._getCollection();
-      const pS = [];
-      tags.map((item) => {
-        pS.push(
-          collection
-            .add({
-              name: item,
-              createTime: new Date().valueOf(),
-            })
-            .execute(),
-        );
-      });
-      await Promise.all(pS);
-      res.status(201).json({});
-    }
+    const row = await db.post(req.body);
+    const ids = row.getGeneratedIds();
+    const result = await db.detail(ids?.[0]);
+    res.status(201).json({
+      message: '操作成功',
+      data: result,
+    });
   } catch (error) {
     next(error);
   }
@@ -37,7 +27,7 @@ export const put = async (req: Request, res: Response, next: NextFunction) => {
       const row = await db.put(req.params.id, req.body);
       res.status(200).json({
         data: row,
-        message: '修改成功',
+        message: '操作成功',
       });
     }
   } catch (error) {
@@ -49,7 +39,7 @@ export const del = async (req: Request, res: Response, next: NextFunction) => {
     const db = new MovieTags();
     await db.del(req.body.ids);
     res.status(200).json({
-      data: req.params.id,
+      message: '操作成功'
     });
   } catch (error) {
     next(error);
@@ -59,7 +49,10 @@ export const get = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const db = new MovieTags();
     const rows = await db.get(req.query);
-    res.status(200).json(rows);
+    res.status(200).json({
+      ...(rows||{}),
+      message: '操作成功'
+    });
   } catch (error) {
     next(error);
   }
@@ -71,9 +64,10 @@ export const detail = async (
 ) => {
   try {
     const db = new MovieTags();
-    const data = await db.detail(req.params.id);
-    res.status(200).send({
-      data: data,
+    const row = await db.detail(req.params.id as string);
+    res.status(200).json({
+      data: row,
+      message: '操作成功'
     });
   } catch (error) {
     next(error);
@@ -85,12 +79,25 @@ export const patch = async (
   next: NextFunction,
 ) => {
   try {
-    const db = new MovieTags();
-    const rows = await db.patch(req);
+    const db = await new MovieTags();
+    await db.patch(req);
     res.status(200).send({
-      data: rows,
+      message: '操作成功'
     });
   } catch (error) {
     next(error);
   }
 };
+
+export const addMany = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const db = await new MovieTags();
+    const result = await db.addMany(req.body)
+    res.status(201).send({
+      message: '操作成功',
+      data: result
+    })
+  } catch (error) {
+    next(error)
+  }
+}

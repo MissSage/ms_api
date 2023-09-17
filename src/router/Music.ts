@@ -14,7 +14,6 @@ router.delete('/music', Music.del);
 router.post('/music', Music.post);
 // 批量修改
 router.patch('/music', Music.patch);
-// 批量上传
-router.post('/music/import', Music.Import);
-
+// 批量添加
+router.post('/music/addmany', Music.addMany);
 export default router;

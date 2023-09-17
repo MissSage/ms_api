@@ -14,5 +14,6 @@ router.delete('/moviestarrings', MovieStarrings.del);
 router.post('/moviestarrings', MovieStarrings.post);
 // 批量修改
 router.patch('/moviestarrings', MovieStarrings.patch);
-
+// 批量添加
+router.post('/moviestarrings/addmany', MovieStarrings.addMany);
 export default router;

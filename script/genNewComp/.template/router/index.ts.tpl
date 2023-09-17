@@ -7,7 +7,7 @@ import express = require('express');
 
 {{routerImports}}
 
-const router:express.Router = express.Router();
+const router: express.Router = express.Router();
 
 {{routerUses}}
 

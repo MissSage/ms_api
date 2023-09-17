@@ -1,7 +1,7 @@
 import express = require('express');
 import { Menu } from '../controller';
 
-const router:express.Router = express.Router();
+const router: express.Router = express.Router();
 // 详情
 router.get('/menu/:id', Menu.detail);
 // 列表

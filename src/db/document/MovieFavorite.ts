@@ -7,4 +7,5 @@ export class MovieFavorite extends Base {
       collection: 'moviefavorite',
     });
   }
+  // 这里写特有逻辑方法
 }

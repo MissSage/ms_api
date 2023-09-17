@@ -7,4 +7,5 @@ export class MovieTags extends Base {
       collection: 'movietags',
     });
   }
+  // 这里写特有逻辑方法
 }

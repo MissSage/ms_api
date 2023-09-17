@@ -14,7 +14,6 @@ router.delete('/image', Image.del);
 router.post('/image', Image.post);
 // 批量修改
 router.patch('/image', Image.patch);
-// 批量导入
-router.post('/image/import', Image.Import);
-
+// 批量添加
+router.post('/image/addmany', Image.addMany);
 export default router;

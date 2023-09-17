@@ -14,7 +14,6 @@ router.delete('/musicfavorite', MusicFavorite.del);
 router.post('/musicfavorite', MusicFavorite.post);
 // 批量修改
 router.patch('/musicfavorite', MusicFavorite.patch);
-// 切换是否收藏
-router.post('/musicfavorite/toggle', MusicFavorite.toggle);
-
+// 批量添加
+router.post('/musicfavorite/addmany', MusicFavorite.addMany);
 export default router;

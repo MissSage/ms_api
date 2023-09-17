@@ -1,7 +1,7 @@
 import express = require('express');
 import { {{apiName}} } from '../controller';
 
-const router:express.Router = express.Router();
+const router: express.Router = express.Router();
 // 详情
 router.get('/{{collectionName}}/:id', {{apiName}}.detail);
 // 列表

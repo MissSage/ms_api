@@ -1,7 +1,7 @@
 import express = require('express');
 import { RoleBtns } from '../controller';
 
-const router:express.Router = express.Router();
+const router: express.Router = express.Router();
 // 详情
 router.get('/rolebtns/:id', RoleBtns.detail);
 // 列表

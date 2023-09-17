@@ -14,5 +14,6 @@ router.delete('/movieplatforms', MoviePlatforms.del);
 router.post('/movieplatforms', MoviePlatforms.post);
 // 批量修改
 router.patch('/movieplatforms', MoviePlatforms.patch);
-
+// 批量添加
+router.post('/movieplatforms/addmany', MoviePlatforms.addMany);
 export default router;

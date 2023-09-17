@@ -14,5 +14,6 @@ router.delete('/movietypes', MovieTypes.del);
 router.post('/movietypes', MovieTypes.post);
 // 批量修改
 router.patch('/movietypes', MovieTypes.patch);
-
+// 批量添加
+router.post('/movietypes/addmany', MovieTypes.addMany);
 export default router;

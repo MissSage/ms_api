@@ -1,72 +1,86 @@
 [
   {
     "databaseName": "ms",
+    "apiName": "User",
+    "apiZHName": "用户",
+    "apiDesc": "用户信息接口",
+    "collectionName": "user"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "Movie",
+    "apiZHName": "电影",
+    "apiDesc": "电影的增删改查接口",
+    "collectionName": "movie"
+  },
+  {
+    "databaseName": "ms",
     "apiName": "MovieTags",
     "apiZHName": "电影标签",
-    "apiDesc": "对电影分类进行标签分类",
+    "apiDesc": "对电影进行标签分类",
     "collectionName": "movietags"
   },
   {
     "databaseName": "ms",
     "apiName": "MovieFavorite",
-    "apiZHName": "喜欢",
-    "apiDesc": "收藏喜欢的资源",
-    "collectionName": "favorite"
+    "apiZHName": "喜欢的电影",
+    "apiDesc": "用户喜欢的电影",
+    "collectionName": "moviefavorite"
   },
   {
-    "databaseName": "movietypes",
+    "databaseName": "ms",
     "apiName": "MovieTypes",
-    "apiZHName": "电影分类",
-    "apiDesc": "默认：这是一个新控制器",
+    "apiZHName": "电影类型",
+    "apiDesc": "电影大类",
     "collectionName": "movietypes"
   },
   {
     "databaseName": "ms",
     "apiName": "MoviePlatforms",
     "apiZHName": "电影平台",
-    "apiDesc": "默认：这是一个新控制器",
+    "apiDesc": "电影平台",
     "collectionName": "movieplatforms"
   },
   {
     "databaseName": "ms",
     "apiName": "MovieStarrings",
-    "apiZHName": "电影主演",
-    "apiDesc": "默认：这是一个新控制器",
+    "apiZHName": "电影明星",
+    "apiDesc": "电影明星信息接口",
     "collectionName": "moviestarrings"
   },
   {
     "databaseName": "ms",
     "apiName": "Music",
     "apiZHName": "音乐",
-    "apiDesc": "默认：这是一个新控制器",
+    "apiDesc": "音乐接口",
     "collectionName": "music"
   },
   {
     "databaseName": "ms",
     "apiName": "MusicFavorite",
-    "apiZHName": "音乐收藏",
-    "apiDesc": "默认：这是一个新控制器",
+    "apiZHName": "喜欢的音乐",
+    "apiDesc": "喜欢的音乐",
     "collectionName": "musicfavorite"
   },
   {
     "databaseName": "ms",
     "apiName": "Image",
     "apiZHName": "图片",
-    "apiDesc": "默认：这是一个新控制器",
+    "apiDesc": "图片",
     "collectionName": "image"
   },
   {
     "databaseName": "ms",
     "apiName": "MovieDirects",
     "apiZHName": "电影目录",
-    "apiDesc": "默认：这是一个新控制器",
+    "apiDesc": "电影目录",
     "collectionName": "moviedirects"
   },
   {
     "databaseName": "ms",
     "apiName": "Role",
     "apiZHName": "角色",
-    "apiDesc": "用户角色",
+    "apiDesc": "角色",
     "collectionName": "role"
   },
   {
@@ -79,8 +93,8 @@
   {
     "databaseName": "ms",
     "apiName": "RoleMenus",
-    "apiZHName": "角色菜单权限",
-    "apiDesc": "角色菜单权限",
+    "apiZHName": "角色菜单",
+    "apiDesc": "角色菜单",
     "collectionName": "rolemenus"
   },
   {
@@ -94,28 +108,14 @@
     "databaseName": "ms",
     "apiName": "Source",
     "apiZHName": "资源",
-    "apiDesc": "所有页面的路径管理",
+    "apiDesc": "资源",
     "collectionName": "source"
   },
   {
     "databaseName": "ms",
     "apiName": "Route",
-    "apiZHName": "异步路由",
-    "apiDesc": "前端页面的异步路由管理",
+    "apiZHName": "路由",
+    "apiDesc": "路由",
     "collectionName": "route"
-  },
-  {
-    "databaseName": "ms",
-    "apiName": "User",
-    "apiZHName": "用户",
-    "apiDesc": "用户信息接口",
-    "collectionName": "user"
-  },
-  {
-    "databaseName": "ms",
-    "apiName": "Movie",
-    "apiZHName": "电影",
-    "apiDesc": "电影的增删改查接口",
-    "collectionName": "movie"
   }
 ]

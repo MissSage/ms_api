@@ -1,7 +1,7 @@
 import express = require('express');
 import { RoleMenus } from '../controller';
 
-const router:express.Router = express.Router();
+const router: express.Router = express.Router();
 // 详情
 router.get('/rolemenus/:id', RoleMenus.detail);
 // 列表
