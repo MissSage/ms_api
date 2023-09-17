@@ -1,20 +1,6 @@
 [
   {
     "databaseName": "ms",
-    "apiName": "User",
-    "apiZHName": "用户",
-    "apiDesc": "默认：这是一个新控制器",
-    "collectionName": "user"
-  },
-  {
-    "databaseName": "ms",
-    "apiName": "Movie",
-    "apiZHName": "电影",
-    "apiDesc": "默认：这是一个新控制器",
-    "collectionName": "movie"
-  },
-  {
-    "databaseName": "ms",
     "apiName": "MovieTags",
     "apiZHName": "电影标签",
     "apiDesc": "对电影分类进行标签分类",
@@ -117,5 +103,19 @@
     "apiZHName": "异步路由",
     "apiDesc": "前端页面的异步路由管理",
     "collectionName": "route"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "User",
+    "apiZHName": "用户",
+    "apiDesc": "用户信息接口",
+    "collectionName": "user"
+  },
+  {
+    "databaseName": "ms",
+    "apiName": "Movie",
+    "apiZHName": "电影",
+    "apiDesc": "电影的增删改查接口",
+    "collectionName": "movie"
   }
 ]

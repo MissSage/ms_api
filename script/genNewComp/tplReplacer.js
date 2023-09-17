@@ -55,8 +55,8 @@ const routerTplReplacer = (listFileContent) => {
   let routerImports = ''
   let routerUses = ''
   listFileContent.map(comp => {
-    routerImports+=`\nimport ${comp.apiName} from './${comp.apiName}';\n`
-    routerUses += `\nrouter.use(${comp.apiName});`
+    routerImports+=`import ${comp.apiName} from './${comp.apiName}';\n`
+    routerUses += `router.use(${comp.apiName});`
   })
   const routerMeta = {
     routerImports,
@@ -74,7 +74,7 @@ const controllerTplReplacer = (listFileContent) => {
   const controllerFileTpl = fs.readFileSync(resolve(__dirname, controllerFileFrom), 'utf-8')
   let controllerImports = ''
   listFileContent.map(comp => {
-    controllerImports+=`\nexport * as ${comp.apiName} from './${comp.apiName}';\n`
+    controllerImports+=`export * as ${comp.apiName} from './${comp.apiName}';\n`
   })
   const controllerMeta = {
     controllerImports
@@ -91,7 +91,7 @@ const dbTplReplacer = (listFileContent) => {
   const dbFileTpl = fs.readFileSync(resolve(__dirname, dbFileFrom), 'utf-8')
   let dbImports = ''
   listFileContent.map(comp => {
-    dbImports+=`\nexport { ${comp.apiName} } from './document/${comp.apiName}';\n`
+    dbImports+=`export { ${comp.apiName} } from './document/${comp.apiName}';\n`
   })
   const dbMeta = {
     dbImports
@@ -108,7 +108,7 @@ const sidebarTplReplacer = (listFileContent) => {
   const docFileTpl = fs.readFileSync(resolve(__dirname, docFileFrom), 'utf-8')
   let docRoutes = ''
   listFileContent.map(comp => {
-    docRoutes+=`\n{ text: '${comp.apiName}', link: '/api/${comp.apiName}' },\n`
+    docRoutes+=`{ text: '${comp.apiName}', link: '/api/${comp.apiName}' },\n`
   })
   const docMeta = {
     docRoutes

@@ -1,10 +1,10 @@
 import { Base } from '../mysql';
 
-export class Movie extends Base {
+export class User extends Base {
   constructor() {
     super({
       schema: 'ms',
-      collection: 'movie',
+      collection: 'user',
     });
   }
   // 这里写特有逻辑方法

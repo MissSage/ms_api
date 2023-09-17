@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: 快速开始
-      link: /api/user
+      link: /api/
     - theme: alt
       text: 在 github 上查看
       link: https://github.com/MissSage/ms_api

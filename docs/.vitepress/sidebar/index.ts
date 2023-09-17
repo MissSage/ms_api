@@ -1,43 +1,38 @@
-import { DefaultTheme } from 'vitepress'
+import { DefaultTheme } from 'vitepress';
 
-const sidebar: DefaultTheme.Sidebar = {
-  '/api/': [
-    {
-      text: 'api',
-      items: [
-        
-{ text: 'User', link: '/api/User' },
+const sidebar: DefaultTheme.Sidebar = [
+  { text: 'Movie', link: '/api/Movie' },
 
-{ text: 'Movie', link: '/api/Movie' },
+  { text: 'MovieTags', link: '/api/MovieTags' },
 
-{ text: 'MovieTags', link: '/api/MovieTags' },
+  { text: 'MovieFavorite', link: '/api/MovieFavorite' },
 
-{ text: 'MovieFavorite', link: '/api/MovieFavorite' },
+  { text: 'MovieTypes', link: '/api/MovieTypes' },
 
-{ text: 'MovieTypes', link: '/api/MovieTypes' },
+  { text: 'MoviePlatforms', link: '/api/MoviePlatforms' },
 
-{ text: 'MoviePlatforms', link: '/api/MoviePlatforms' },
+  { text: 'MovieStarrings', link: '/api/MovieStarrings' },
 
-{ text: 'MovieStarrings', link: '/api/MovieStarrings' },
+  { text: 'Music', link: '/api/Music' },
 
-{ text: 'Music', link: '/api/Music' },
+  { text: 'MusicFavorite', link: '/api/MusicFavorite' },
 
-{ text: 'MusicFavorite', link: '/api/MusicFavorite' },
+  { text: 'Image', link: '/api/Image' },
 
-{ text: 'Image', link: '/api/Image' },
+  { text: 'MovieDirects', link: '/api/MovieDirects' },
 
-{ text: 'MovieDirects', link: '/api/MovieDirects' },
+  { text: 'Role', link: '/api/Role' },
 
-{ text: 'Role', link: '/api/Role' },
+  { text: 'RoleBtns', link: '/api/RoleBtns' },
 
-{ text: 'Source', link: '/api/Source' },
+  { text: 'RoleMenus', link: '/api/RoleMenus' },
 
-{ text: 'Route', link: '/api/Route' },
+  { text: 'Menu', link: '/api/Menu' },
 
-{ text: 'User', link: '/api/User' },
+  { text: 'Source', link: '/api/Source' },
 
-      ],
-    },
-  ],
-}
-export default sidebar
+  { text: 'Route', link: '/api/Route' },
+
+  { text: 'User', link: '/api/User' },
+];
+export default sidebar;
